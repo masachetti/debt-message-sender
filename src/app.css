@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* @import url(https://fonts.googleapis.com/css?family=Open+Sans:700,300); */
+
+@layer components{
+  .TableFixedHeader {
+    @apply overflow-y-scroll;
+  }
+
+  .TableFixedHeader thead th {
+    @apply sticky top-0 z-10;
+  }
+
+  .TableFixedHeader table {
+    @apply w-full table-fixed;
+  }
+
+  .TableFixedHeader th,
+  .TableFixedHeader td {
+    @apply py-2 px-4;
+  }
+
+  .FaturaTable {
+    @apply TableFixedHeader border-2 w-fit overflow-x-hidden rounded-md;
+  }
+
+  .FaturaTable thead th {
+    box-shadow: inset 1px 1px #000, inset 0 -1px #000;
+  }
+
+  .FaturaTable td {
+    box-shadow: inset 1px 1px #000;
+  }
+
+  .FaturaTable tbody tr:first-child td {
+    box-shadow: inset 1px 0 #000;
+  }
+
+  .ClientTable{
+    @apply TableFixedHeader border w-fit overflow-x-hidden rounded-md;
+  }
+
+  .ClientTable thead th {
+    box-shadow: inset 3px 3px white, inset 0 -3px white;
+  }
+
+  .ClientTable td {
+    box-shadow: inset 3px 3px white;
+  }
+
+  .ClientTable tbody tr:first-child td {
+    box-shadow: inset 3px 0 white;
+  }
+
+  .IgnoredClientTable {
+    @apply TableFixedHeader border w-fit overflow-x-hidden rounded-md;
+  }
+
+  .IgnoredClientTable thead th {
+    box-shadow: inset 3px 3px white, inset 0 -3px white;
+  }
+
+  .IgnoredClientTable td {
+    box-shadow: inset 3px 3px white;
+  }
+
+  .IgnoredClientTable tbody tr:first-child td {
+    box-shadow: inset 3px 0 white;
+  }
+
+  .GreenButton {
+    @apply bg-green-800 rounded-3xl py-2 px-3 shadow-sm text-white font-bold 
+    hover:bg-green-600 active:bg-green-700 active:shadow-xl transition duration-100 flex items-center gap-3
+  }
+}
+
+
+*{
+  font-family: sans-serif;
+}
