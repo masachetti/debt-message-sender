@@ -22,19 +22,19 @@
     @apply py-2 px-4;
   }
 
-  .FaturaTable {
+  .BillTable {
     @apply TableFixedHeader border-2 w-fit overflow-x-hidden rounded-md;
   }
 
-  .FaturaTable thead th {
+  .BillTable thead th {
     box-shadow: inset 1px 1px #000, inset 0 -1px #000;
   }
 
-  .FaturaTable td {
+  .BillTable td {
     box-shadow: inset 1px 1px #000;
   }
 
-  .FaturaTable tbody tr:first-child td {
+  .BillTable tbody tr:first-child td {
     box-shadow: inset 1px 0 #000;
   }
 

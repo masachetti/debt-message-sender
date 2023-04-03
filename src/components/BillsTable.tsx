@@ -10,14 +10,14 @@ import {
   makeDateFromBrDateString,
 } from "../utils/date";
 
-interface FaturasTableProps {
+interface BillsTableProps {
   customer: TCustomer;
   className?: string;
   onCopyToClipboardSuccess?: () => void;
   onCopyToClipboardFail?: () => void;
 }
 
-const FaturasTable: React.FC<FaturasTableProps> = ({
+const BillsTable: React.FC<BillsTableProps> = ({
   customer,
   className = "",
   onCopyToClipboardFail,
@@ -51,7 +51,7 @@ const FaturasTable: React.FC<FaturasTableProps> = ({
   }
 
   return (
-    <div className={`FaturaTable ${className}`}>
+    <div className={`BillTable ${className}`}>
       <table>
         <thead>
           <tr className="[&>th]:bg-gray-400">
@@ -156,4 +156,4 @@ const FaturasTable: React.FC<FaturasTableProps> = ({
   );
 };
 
-export default FaturasTable;
+export default BillsTable;

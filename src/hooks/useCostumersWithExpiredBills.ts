@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { getCobrancas } from "../api/cobrancas";
-import { getCustomerBills } from "../api/faturas";
+import { getCustomerBills } from "../api/bills";
 import { useAuth } from "../context/tokenContext";
 import { createCustomer } from "../models/Customer";
 import {
@@ -38,8 +38,8 @@ export function useCustomersWithExpiredBills() {
               getCustomerBills({
                 token,
                 customerDocument: customer.cpf_cnpj,
-              }).then((faturaResponse) =>
-                createCustomer({ customerData: customer, billsData: faturaResponse })
+              }).then((billResponse) =>
+                createCustomer({ customerData: customer, billsData: billResponse })
               )
           )
         );
