@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
-import { useClientsWithExpiredBills } from "../hooks/useClientsWithExpiredBills";
-import { useMockClients } from "../hooks/useMockClients";
+import { useCustomersWithExpiredBills } from "../hooks/useCostumersWithExpiredBills";
+import { useMockCustomers } from "../hooks/useMockCustomers";
 import { TCustomer , TBill } from "../types/CustomerModel";
 
 interface ICustomersContext {
@@ -21,8 +21,8 @@ const CustomersSelectionContext = React.createContext<ICustomersContext | null>(
 export const CustomersSelectionProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const { data, loading } = useClientsWithExpiredBills();
-  // const { data } = useMockClients();
+  const { data, loading } = useCustomersWithExpiredBills();
+  // const { data } = useMockCustomers();
   // let loading = false;
 
   const [customersMap, setCustomersMap] =

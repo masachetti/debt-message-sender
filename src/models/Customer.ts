@@ -14,7 +14,7 @@ export const createCustomer: CreateCustomer = ({ customerData, billsData }) => {
     })),
   }));
 
-  let client: TCustomer = {
+  let customer: TCustomer = {
     customerId: customerData.cpf_cnpj,
     name: customerData.nome_razaosocial,
     firstPhone: customerData.telefone_primario,
@@ -23,5 +23,5 @@ export const createCustomer: CreateCustomer = ({ customerData, billsData }) => {
     bills,
   };
 
-  return client;
+  return customer;
 };
