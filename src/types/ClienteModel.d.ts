@@ -27,6 +27,6 @@ type TClient = {
 export type CreateClient = (params: {
   clientData: TCliente;
   billsData: FaturasClienteResponse;
-}) => ClientWithSelectableBills;
+}) => TClient;
 
 export type ClientNameAndId = Pick<TClient, "name" | "clientId">;
