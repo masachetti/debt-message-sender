@@ -4,7 +4,7 @@ const baseURL = `${process.env.REACT_APP_API_URL}/api/v1/integracao/cliente/fina
 
 type GetFaturasClienteParams = { token: string; clientDocument: string };
 
-export function getFaturasCliente({
+export function fecthCustomerBills({
   token,
   clientDocument,
 }: GetFaturasClienteParams): Promise<FaturasClienteResponse> {

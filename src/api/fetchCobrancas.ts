@@ -2,7 +2,7 @@ import { CobrancasResponse } from "../types/ApiResponses";
 
 const baseURL = `${process.env.REACT_APP_API_URL}/api/v1/financeiro/cobranca/consultar/80`;
 
-export function getCobrancas(token: string): Promise<CobrancasResponse> {
+export function fetchCobrancas(token: string): Promise<CobrancasResponse> {
   const data = {
     apenas_ativo: false,
     status_generico: "vencido",

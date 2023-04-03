@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { getCobrancas } from "../api/cobrancas";
-import { getFaturasCliente } from "../api/faturas";
+import { fetchCobrancas } from "../api/fetchCobrancas";
+import { fecthCustomerBills } from "../api/fetchCustomerBills";
 import { useAuth } from "../context/tokenContext";
 import { createClient } from "../models/Client";
 import {
@@ -25,7 +25,7 @@ export function useClientsWithExpiredBills() {
   if (token) {
     if (!data && !fetching) {
       setFetching(true);
-      getCobrancas(token).then(async (data: CobrancasResponse) => {
+      fetchCobrancas(token).then(async (data: CobrancasResponse) => {
         let clientList = data.cobrancas.data.map(
           (d) => d.cliente_servico.cliente
         );
@@ -35,7 +35,7 @@ export function useClientsWithExpiredBills() {
         clientsWithExpiredBills = await Promise.all(
           uniqueClients.map(
             async (client) =>
-              getFaturasCliente({
+              fecthCustomerBills({
                 token,
                 clientDocument: client.cpf_cnpj,
               }).then((faturaResponse) =>
