@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { TokenProviderType } from "../types/tokenContext";
-import { fetchToken } from "../api/token";
+import { fetchToken } from "../api/fetchToken";
 
 const AuthContext = React.createContext<TokenProviderType | null>(null);
 
@@ -10,7 +10,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({
   let [token, setToken] = useState<string | null>(null);
 
   if (token === null) {
-    fetchToken(setToken);
+    fetchToken().then((token) => setToken(token));
   }
 
   return (
