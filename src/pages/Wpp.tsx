@@ -2,23 +2,22 @@ import React, { useEffect, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { AnimatePresence, motion } from "framer-motion";
 import Loading from "../components/Loading";
-import { ClientInfo } from "whatsapp-web.js";
-import WppTable from "../components/WppTable";
 import { Link } from "react-router-dom";
 import ArrowBackIcon from "../components/icons/ArrowBack";
 import WppMain from "../components/WppMain";
+import { ClientInfo } from "whatsapp-web.js";
 
 const Wpp = () => {
   const [qrCode, setQrCode] = useState<null | string>(null);
-  const [wppClientInfo, setWppClientInfo] = useState<null | ClientInfo>(null);
+  const [wppCustomerInfo, setWppCustomerInfo] = useState<null | ClientInfo>(null);
 
   useEffect(() => {
     let qrCodeHandlerCleaner = electronApi.handleWppQrCode((event, qrCode) => {
       setQrCode(qrCode);
     });
     let wppReadyHandlerCleaner = electronApi.handleWppReady(
-      (event, clientInfo) => {
-        setWppClientInfo(clientInfo);
+      (event, customerInfo) => {
+        setWppCustomerInfo(customerInfo);
       }
     );
     electronApi.startWpp();
@@ -28,8 +27,8 @@ const Wpp = () => {
     };
   }, []);
 
-  let isLoading = !!!(qrCode || wppClientInfo);
-  let isWppLogged = !!wppClientInfo;
+  let isLoading = !!!(qrCode || wppCustomerInfo);
+  let isWppLogged = !!wppCustomerInfo;
 
   // let isLoading = false;
   // let isWppLogged = true;
@@ -70,7 +69,7 @@ const Wpp = () => {
         {isLoading
           ? loadingComponent()
           : isWppLogged
-          ? <WppMain wppClientInfo={wppClientInfo!}/>
+          ? <WppMain wppCustomerInfo={wppCustomerInfo!}/>
           : qrCodeComponent()}
       </AnimatePresence>
     </div>

@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
-import { TBill, TClient } from "../types/ClienteModel";
-import { useClientsSelection } from "../context/clientsContext";
+import { TBill, TCustomer } from "../types/CustomerModel";
+import { useCustomersSelection } from "../context/customersContext";
 import { AnimatePresence, motion } from "framer-motion";
 import LinkIcon from "./icons/Link";
 import CopyIcon from "./icons/Copy";
@@ -11,20 +11,20 @@ import {
 } from "../utils/date";
 
 interface FaturasTableProps {
-  client: TClient;
+  customer: TCustomer;
   className?: string;
   onCopyToClipboardSuccess?: () => void;
   onCopyToClipboardFail?: () => void;
 }
 
 const FaturasTable: React.FC<FaturasTableProps> = ({
-  client,
+  customer,
   className = "",
   onCopyToClipboardFail,
   onCopyToClipboardSuccess,
 }) => {
-  const { toggleAllClientBills, toggleBill, billsMap } = useClientsSelection();
-  let { bills } = client;
+  const { toggleAllCustomerBills: toggleAllCustomerBills, toggleBill, billsMap } = useCustomersSelection();
+  let { bills } = customer;
 
   const [isBillDetailsOpen, setIsBillDetailsOpen] = useState(() => {
     let billDetailsMap = new Map<TBill, boolean>(
@@ -56,7 +56,7 @@ const FaturasTable: React.FC<FaturasTableProps> = ({
         <thead>
           <tr className="[&>th]:bg-gray-400">
             <th
-              onDoubleClick={() => toggleAllClientBills(client)}
+              onDoubleClick={() => toggleAllCustomerBills(customer)}
               onMouseDown={(ev) => ev.preventDefault()}
             >
               Check

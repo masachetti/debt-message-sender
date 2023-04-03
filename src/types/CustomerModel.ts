@@ -1,6 +1,6 @@
-import { FaturasClienteResponse, TCliente, TDetalheFatura, TFatura } from "./ApiResponses";
+import { CustomerBillsResponse, TCliente, TDetalheFatura, TFatura } from "./ApiResponses";
 
-type TBill = {
+export type TBill = {
   billId: TFatura['id_fatura']
   barCode: TFatura['codigo_barras'];
   dueDate: TFatura['data_vencimento'];
@@ -15,18 +15,18 @@ type TBillDetails = {
   value: TDetalheFatura['valor'];
 }
 
-type TClient = {
+export type TCustomer = {
   name : TCliente['nome_razaosocial'];
-  clientId : TCliente['cpf_cnpj'];
+  customerId : TCliente['cpf_cnpj'];
   firstPhone : TCliente['telefone_primario'];
   secondPhone : TCliente['telefone_secundario'];
   thirdPhone : TCliente['telefone_terciario'];
   bills: TBill[]
 }
 
-export type CreateClient = (params: {
-  clientData: TCliente;
-  billsData: FaturasClienteResponse;
-}) => ClientWithSelectableBills;
+export type CreateCustomer = (params: {
+  customerData: TCliente;
+  billsData: CustomerBillsResponse;
+}) => TCustomer;
 
-export type ClientNameAndId = Pick<TClient, "name" | "clientId">;
+export type CustomerNameAndId = Pick<TCustomer, "name" | "customerId">;

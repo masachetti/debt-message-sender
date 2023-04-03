@@ -1,18 +1,18 @@
-import { FaturasClienteResponse } from "../types/ApiResponses";
+import { CustomerBillsResponse } from "../types/ApiResponses";
 
-const baseURL = `${process.env.REACT_APP_API_URL}/api/v1/integracao/cliente/financeiro?`;
+const baseURL = `${process.env.REACT_APP_API_URL}/api/v1/integracao/Customere/financeiro?`;
 
-type GetFaturasClienteParams = { token: string; clientDocument: string };
+type GetCustomerBillsParams = { token: string; customerDocument: string };
 
-export function getFaturasCliente({
+export function getCustomerBills({
   token,
-  clientDocument,
-}: GetFaturasClienteParams): Promise<FaturasClienteResponse> {
+  customerDocument,
+}: GetCustomerBillsParams): Promise<CustomerBillsResponse> {
   let fullURL =
     baseURL +
     new URLSearchParams({
       busca: "cpf_cnpj",
-      termo_busca: clientDocument,
+      termo_busca: customerDocument,
       apenas_pendente: "sim",
       data_fim: new Date().toISOString().slice(0, 10),
     });

@@ -1,9 +1,7 @@
 import React from "react";
-import Row from "./IgnoredClientTable/Row";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOrderedTable } from "../hooks/useOrderedTable";
-import { useIgnoredClients } from "../context/ignoredClientsContext";
-import { ClientNameAndId } from "../types/ClienteModel";
+import { useIgnoredCustomers } from "../context/ignoredCustomersContext";
 import CheckIcon from "./icons/Check";
 
 const transition = { duration: 0.15 };
@@ -11,15 +9,15 @@ const cellExit = { padding: 0 };
 const cellDivExit = { maxHeight: 0 };
 const rowExit = { transform: "translate(100%, 0)" };
 
-const IgnoredClientTable = ({ className = "" }) => {
-  const { ignoredClients, removeClientFromIgnored } = useIgnoredClients();
+const IgnoredCustomerTable = ({ className = "" }) => {
+  const { ignoredCustomers, removeCustomerFromIgnored } = useIgnoredCustomers();
   const { orderedContent, toggleOrdering, icons } = useOrderedTable(
-    ignoredClients,
+    ignoredCustomers,
     ["name"],
     18
   );
   return (
-    <div className={`IgnoredClientTable ${className}`}>
+    <div className={`IgnoredCustomerTable ${className}`}>
       <table>
         <thead>
           <tr className="[&>th]:bg-neutral-600 [&>th]:text-white">
@@ -39,12 +37,12 @@ const IgnoredClientTable = ({ className = "" }) => {
         </thead>
         <tbody className="[&>tr>td]:bg-neutral-800 [&>tr>td]:text-white">
           <AnimatePresence>
-            {orderedContent.map((client) => (
+            {orderedContent.map((customer) => (
               <motion.tr
                 layout
                 exit={rowExit}
                 transition={transition}
-                key={client.clientId}
+                key={customer.customerId}
               >
                 <motion.td exit={cellExit} transition={transition} colSpan={3}>
                   <motion.div
@@ -52,7 +50,7 @@ const IgnoredClientTable = ({ className = "" }) => {
                     transition={transition}
                     className="max-h-12"
                   >
-                    {client.name}
+                    {customer.name}
                   </motion.div>
                 </motion.td>
                 <motion.td exit={cellExit} transition={transition}>
@@ -63,7 +61,7 @@ const IgnoredClientTable = ({ className = "" }) => {
                   >
                     <button
                       className="flex items-center justify-center gap-1 border rounded-2xl bg-green-500 hover:bg-green-600 active:bg-green-700 text-white px-3 py-0.5 text-sm font-bold"
-                      onClick={() => removeClientFromIgnored(client)}
+                      onClick={() => removeCustomerFromIgnored(customer)}
                     >
                       <CheckIcon size={25} /> Habilitar
                     </button>
@@ -78,4 +76,4 @@ const IgnoredClientTable = ({ className = "" }) => {
   );
 };
 
-export default IgnoredClientTable;
+export default IgnoredCustomerTable;

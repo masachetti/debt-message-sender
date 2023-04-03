@@ -1,14 +1,14 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 import { useOrderedTable } from "../hooks/useOrderedTable";
-import { TClient } from "../types/ClienteModel";
-import { useClientsSelection } from "../context/clientsContext";
-import { useIgnoredClients } from "../context/ignoredClientsContext";
+import { TCustomer } from "../types/CustomerModel";
+import { useCustomersSelection } from "../context/customersContext";
+import { useIgnoredCustomers } from "../context/ignoredCustomersContext";
 import BanIcon from "./icons/Ban";
 
-type ClientTableProps = {
+type CustomersTableProps = {
   className?: string;
-  onClientRowDoubleClick: (client: TClient) => void;
+  onCustomerRowDoubleClick: (customer: TCustomer) => void;
 };
 
 const rowTransition = { duration: 0.15 };
@@ -16,34 +16,34 @@ const rowExit = { transform: "translate(100%, 0)" };
 const cellExit = { padding: 0 };
 const cellDivExit = { maxHeight: 0 };
 
-const ClientTable = ({
+const CustomersTable = ({
   className = "",
-  onClientRowDoubleClick,
-}: ClientTableProps) => {
-  const { clientsMap, toggleClient, toggleAllClients } = useClientsSelection();
-  const { ignoredClients, setClientAsIgnored } = useIgnoredClients();
+  onCustomerRowDoubleClick,
+}: CustomersTableProps) => {
+  const { customersMap: customersMap, toggleCustomer: toggleCustomer, toggleAllCustomers: toggleAllCustomers } = useCustomersSelection();
+  const { ignoredCustomers, setCustomerAsIgnored } = useIgnoredCustomers();
 
-  let allowedClients = [...clientsMap!.keys()].filter(
-    (client) =>
-      !ignoredClients.find((iClient) => iClient.clientId === client.clientId)
+  let allowedCustomers = [...customersMap!.keys()].filter(
+    (customer) =>
+      !ignoredCustomers.find((iCustomer) => iCustomer.customerId === customer.customerId)
   );
 
   const { orderedContent, toggleOrdering, icons } = useOrderedTable(
-    allowedClients,
+    allowedCustomers,
     ["name", "bills"],
     18
   );
 
-  const ignoreButtonHandler = (client: TClient) => setClientAsIgnored(client);
-  const onCheckBoxCellClick = (client: TClient) => toggleClient(client);
+  const ignoreButtonHandler = (customer: TCustomer) => setCustomerAsIgnored(customer);
+  const onCheckBoxCellClick = (customer: TCustomer) => toggleCustomer(customer);
 
   return (
-    <div className={`ClientTable ${className}`}>
+    <div className={`CustomerTable ${className}`}>
       <table>
         <thead>
           <tr className="[&>th]:bg-indigo-600 [&>th]:text-white">
             <th
-              onDoubleClick={toggleAllClients}
+              onDoubleClick={toggleAllCustomers}
               onMouseDown={(ev) => ev.preventDefault()}
             >
               Selecionar
@@ -75,11 +75,11 @@ const ClientTable = ({
         </thead>
         <tbody className="[&>tr>td]:bg-indigo-200">
           <AnimatePresence>
-            {orderedContent.map((client) => (
+            {orderedContent.map((customer) => (
               <motion.tr
-                key={client.clientId}
+                key={customer.customerId}
                 layout
-                onDoubleClick={() => onClientRowDoubleClick(client)}
+                onDoubleClick={() => onCustomerRowDoubleClick(customer)}
                 className="hover:brightness-90"
                 exit={rowExit}
                 transition={rowTransition}
@@ -87,7 +87,7 @@ const ClientTable = ({
                 <motion.td
                   exit={cellExit}
                   transition={rowTransition}
-                  onClick={() => onCheckBoxCellClick(client)}
+                  onClick={() => onCheckBoxCellClick(customer)}
                 >
                   <motion.div
                     className="flex justify-center max-h-12"
@@ -96,7 +96,7 @@ const ClientTable = ({
                   >
                     <input
                       type="checkbox"
-                      checked={clientsMap!.get(client)}
+                      checked={customersMap!.get(customer)}
                       onChange={() => {}}
                     />
                   </motion.div>
@@ -111,7 +111,7 @@ const ClientTable = ({
                     transition={rowTransition}
                     className="max-h-12"
                   >
-                    {client.name}
+                    {customer.name}
                   </motion.div>
                 </motion.td>
                 <motion.td
@@ -124,7 +124,7 @@ const ClientTable = ({
                     exit={cellDivExit}
                     transition={rowTransition}
                   >
-                    {client.bills.length}
+                    {customer.bills.length}
                   </motion.div>
                 </motion.td>
                 <motion.td exit={cellExit} transition={rowTransition}>
@@ -135,7 +135,7 @@ const ClientTable = ({
                   >
                     <button
                       className="flex items-center gap-1 border rounded-xl bg-zinc-500 hover:bg-zinc-600 active:bg-zinc-700 text-white px-2 py-1 text-xs"
-                      onClick={() => ignoreButtonHandler(client)}
+                      onClick={() => ignoreButtonHandler(customer)}
                     >
                       <BanIcon size={13} /> Ignorar
                     </button>
@@ -150,4 +150,4 @@ const ClientTable = ({
   );
 };
 
-export default ClientTable;
+export default CustomersTable;

@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import ClientTable from "../components/ClientTable";
-import { TClient } from "../types/ClienteModel";
+import CustomersTable from "../components/CustomersTable";
+import { TCustomer } from "../types/CustomerModel";
 import Loading from "./../components/Loading";
 import { AnimatePresence, motion } from "framer-motion";
 import SendIcon from "../components/icons/Send";
-import { useClientsSelection } from "../context/clientsContext";
-import { useIgnoredClients } from "../context/ignoredClientsContext";
+import { useCustomersSelection } from "../context/customersContext";
+import { useIgnoredCustomers } from "../context/ignoredCustomersContext";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 function Home() {
   const [search, setSearch] = useState("");
-  const { loading: clientsLoading } = useClientsSelection();
-  const { loading: ignoredClientsLoading } = useIgnoredClients();
+  const { loading: customersLoading } = useCustomersSelection();
+  const { loading: ignoredCustomersLoading } = useIgnoredCustomers();
 
   const navigate = useNavigate();
 
@@ -21,18 +21,18 @@ function Home() {
   };
 
   // if (search) {
-  //   displayClients = displayClients!.filter((client) =>
-  //     client.nome_razaosocial.toLowerCase().includes(search.toLowerCase())
+  //   displayCustomers = displayCustomers!.filter((customer) =>
+  //     customer.nome_razaosocial.toLowerCase().includes(search.toLowerCase())
   //   );
-  //   displayIgnoredClients = displayIgnoredClients!.filter((client) =>
-  //     client.nome_razaosocial.toLowerCase().includes(search.toLowerCase())
+  //   displayIgnoredCustomers = displayIgnoredCustomers!.filter((customer) =>
+  //     customer.nome_razaosocial.toLowerCase().includes(search.toLowerCase())
   //   );
   // }
 
-  let loading = clientsLoading || ignoredClientsLoading;
+  let loading = customersLoading || ignoredCustomersLoading;
 
-  const goToClientPage = (client: TClient) => {
-    let url = "/client/" + client.clientId;
+  const goToCustomerPage = (customer: TCustomer) => {
+    let url = "/customer/" + customer.customerId;
     navigate(url);
   };
 
@@ -58,15 +58,15 @@ function Home() {
                 className="w-4/5 py-1 px-2 border-2 outline-0 rounded-xl border-indigo-400 focus:border-indigo-900"
                 onChange={updateSearch}
               />
-              <Link to={"/ignored-clients"}>
+              <Link to={"/ignored-customers"}>
                 <button className="text-white bg-neutral-800 border rounded-2xl px-3 py-2 text-sm font-bold">
                   Ver ignorados
                 </button>
               </Link>
             </div>
-            <ClientTable
+            <CustomersTable
               className="max-h-[80vh] my-4"
-              onClientRowDoubleClick={goToClientPage}
+              onCustomerRowDoubleClick={goToCustomerPage}
             />
             <Link to={"/wpp"}>
               <button className="GreenButton">

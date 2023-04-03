@@ -3,10 +3,10 @@ import { AuthProvider } from "./context/tokenContext";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import "./app.css";
-import { ClientsSelectionProvider } from "./context/clientsContext";
-import { IgnoredClientsProvider } from "./context/ignoredClientsContext";
-import ClientDataView from "./pages/ClientDataView";
-import IgnoredClients from "./pages/IgnoredClients";
+import { CustomersSelectionProvider } from "./context/customersContext";
+import { IgnoredCustomersProvider } from "./context/ignoredCustomersContext";
+import CustomerDataView from "./pages/CustomerDataView";
+import IgnoredCustomers from "./pages/IgnoredCustomers";
 import Wpp from "./pages/Wpp";
 import dotenv from "dotenv"
 
@@ -15,18 +15,18 @@ dotenv.config();
 function App() {
   return (
     <AuthProvider>
-      <IgnoredClientsProvider>
-        <ClientsSelectionProvider>
+      <IgnoredCustomersProvider>
+        <CustomersSelectionProvider>
           <HashRouter>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/client/:clientId" element={<ClientDataView />} />
-              <Route path="/ignored-clients" element={<IgnoredClients />} />
+              <Route path="/customer/:customerId" element={<CustomerDataView />} />
+              <Route path="/ignored-customers" element={<IgnoredCustomers />} />
               <Route path="/wpp" element={<Wpp />} />
             </Routes>
           </HashRouter>
-        </ClientsSelectionProvider>
-      </IgnoredClientsProvider>
+        </CustomersSelectionProvider>
+      </IgnoredCustomersProvider>
     </AuthProvider>
   );
 }

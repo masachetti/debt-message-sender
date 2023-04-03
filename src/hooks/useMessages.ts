@@ -1,4 +1,4 @@
-import { TBill, TClient } from "../types/ClienteModel";
+import { TBill, TCustomer } from "../types/CustomerModel";
 import {
   calculateDifferenceBetweenDates,
   makeDateFromBrDateString,
@@ -96,31 +96,31 @@ ${createBillsString(bills)}
 ${footer}
 `;
 
-function createMessage(client: TClient, clientBills: Array<TBill>) {
-  let billsDaysAfterDueDate = clientBills.map(getDaysAfterDueDate);
+function createMessage(customer: TCustomer, customerBills: Array<TBill>) {
+  let billsDaysAfterDueDate = customerBills.map(getDaysAfterDueDate);
   let higherDaysAfterDueDate = Math.max(...billsDaysAfterDueDate);
 
   let footerMessage = createFooter(higherDaysAfterDueDate);
   if (higherDaysAfterDueDate >= 3 && higherDaysAfterDueDate < 5) {
-    return messageFor3DaysAfterDueDate(clientBills, footerMessage);
+    return messageFor3DaysAfterDueDate(customerBills, footerMessage);
   } else if (higherDaysAfterDueDate === 5) {
-    return messageFor5DaysAfterDueDate(clientBills, footerMessage);
+    return messageFor5DaysAfterDueDate(customerBills, footerMessage);
   } else if (higherDaysAfterDueDate >= 6 && higherDaysAfterDueDate < 15) {
-    return messageFor6DaysAfterDueDate(clientBills, footerMessage);
+    return messageFor6DaysAfterDueDate(customerBills, footerMessage);
   } else if (higherDaysAfterDueDate >= 15 && higherDaysAfterDueDate < 30) {
-    return messageFor15DaysAfterDueDate(clientBills, footerMessage);
+    return messageFor15DaysAfterDueDate(customerBills, footerMessage);
   } else if (higherDaysAfterDueDate >= 30) {
-    return messageFor30DaysAfterDueDate(clientBills, footerMessage);
+    return messageFor30DaysAfterDueDate(customerBills, footerMessage);
   }
   return "";
 }
 
 export function useMessages(
-  selectedBillsByClient: Map<TClient, Array<TBill>>
-): Map<TClient, string> {
+  selectedBillsByCustomer: Map<TCustomer, Array<TBill>>
+): Map<TCustomer, string> {
   let messages = new Map();
-  selectedBillsByClient.forEach((clientBills, client) => {
-    messages.set(client, createMessage(client, clientBills));
+  selectedBillsByCustomer.forEach((customerBills, customer) => {
+    messages.set(customer, createMessage(customer, customerBills));
   });
   return messages;
 }

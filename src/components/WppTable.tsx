@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-import { useClientsSelection } from "../context/clientsContext";
-import { useIgnoredClients } from "../context/ignoredClientsContext";
-import { useMessages } from "../hooks/useMessages";
 import CardTextIcon from "./icons/CardText";
-import { TBill, TClient } from "../types/ClienteModel";
+import { TBill, TCustomer } from "../types/CustomerModel";
 import MessagePreview from "./MessagePreview";
 import { PhoneStatesMap, TPhoneState } from "../types/Wpp";
 import CheckIcon from "./icons/Check";
@@ -12,14 +9,14 @@ import DashIcon from "./icons/Dash";
 
 interface WppTableProps {
   className?: string;
-  selectedBillsByClient: Map<TClient, Array<TBill>>;
-  messages: Map<TClient, string>;
+  selectedBillsByCustomer: Map<TCustomer, Array<TBill>>;
+  messages: Map<TCustomer, string>;
   phonesState: PhoneStatesMap;
 }
 
 function createPhoneRep(
   phoneState: TPhoneState ,
-  clientPhone: TClient["secondPhone"]
+  customerPhone: TCustomer["secondPhone"]
 ) {
   const rep = (content: JSX.Element) => (
     <div className="flex justify-center max-h-12">{content}</div>
@@ -29,35 +26,35 @@ function createPhoneRep(
   if (phoneState === "Fail") {
     return rep(<XIcon className="text-red-600" size={46}/>);
   }
-  if (phoneState === "NotNecessary" || !!!clientPhone) {
+  if (phoneState === "NotNecessary" || !!!customerPhone) {
     return rep(<DashIcon className="text-gray-600" size={46}/>);
   }
-  return rep(<>{clientPhone}</>);
+  return rep(<>{customerPhone}</>);
 }
 
 const WppTable = ({
   className = "",
-  selectedBillsByClient,
+  selectedBillsByCustomer,
   messages,
   phonesState,
 }: WppTableProps) => {
-  const [clientToShowMessagePreview, setClientToShowMessagePreview] =
-    useState<TClient | null>(null);
+  const [customerToShowMessagePreview, setCustomerToShowMessagePreview] =
+    useState<TCustomer | null>(null);
 
-  const openMessagePreview = (client: TClient) =>
-    setClientToShowMessagePreview(client);
+  const openMessagePreview = (customer: TCustomer) =>
+    setCustomerToShowMessagePreview(customer);
 
-  const closeMessagePreview = () => setClientToShowMessagePreview(null);
+  const closeMessagePreview = () => setCustomerToShowMessagePreview(null);
 
-  const clients = [...selectedBillsByClient.keys()];
+  const customers = [...selectedBillsByCustomer.keys()];
 
   return (
     <>
-      <div className={`ClientTable ${className}`}>
+      <div className={`CustomerTable ${className}`}>
         <table>
           <thead>
             <tr className="[&>th]:bg-indigo-600 [&>th]:text-white">
-              <th colSpan={2}>Cliente</th>
+              <th colSpan={2}>Customere</th>
               <th>Faturas selecionadas</th>
               <th>Mensagem</th>
               <th>Telefone 1</th>
@@ -66,33 +63,33 @@ const WppTable = ({
             </tr>
           </thead>
           <tbody className="[&>tr>td]:bg-indigo-200">
-            {clients.map((client) => (
+            {customers.map((customer) => (
               <tr>
-                <td colSpan={2}>{client.name}</td>
+                <td colSpan={2}>{customer.name}</td>
                 <td>
                   <div className="flex justify-center max-h-12">
-                    {selectedBillsByClient.get(client)!.length}
+                    {selectedBillsByCustomer.get(customer)!.length}
                   </div>
                 </td>
                 <td>
                   <div
                     className="flex justify-center max-h-12"
-                    onClick={() => openMessagePreview(client)}
+                    onClick={() => openMessagePreview(customer)}
                   >
                     <CardTextIcon size={35} className={"cursor-pointer"} />
                   </div>
                 </td>
-                <td>{createPhoneRep(phonesState.get(client)![0], client.firstPhone)}</td>
-                <td>{createPhoneRep(phonesState.get(client)![1], client.secondPhone)}</td>
-                <td>{createPhoneRep(phonesState.get(client)![2], client.thirdPhone)}</td>
+                <td>{createPhoneRep(phonesState.get(customer)![0], customer.firstPhone)}</td>
+                <td>{createPhoneRep(phonesState.get(customer)![1], customer.secondPhone)}</td>
+                <td>{createPhoneRep(phonesState.get(customer)![2], customer.thirdPhone)}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      {clientToShowMessagePreview && (
+      {customerToShowMessagePreview && (
         <MessagePreview
-          message={messages.get(clientToShowMessagePreview) || ""}
+          message={messages.get(customerToShowMessagePreview) || ""}
           onClose={closeMessagePreview}
         />
       )}
