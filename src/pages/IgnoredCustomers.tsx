@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import IgnoredClientTable from "../components/IgnoredClientTable";
+import IgnoredCustomerTable from "../components/IgnoredCustomerTable";
 import { Link } from "react-router-dom";
 
-const IgnoredClients = () => {
+const IgnoredCustomers = () => {
   const [search, setSearch] = useState("");
 
   const updateSearch: React.ChangeEventHandler<HTMLInputElement> = (ev) => {
@@ -25,10 +25,10 @@ const IgnoredClients = () => {
             </button>
           </Link>
         </div>
-        <IgnoredClientTable className="max-h-[80vh] my-4" />
+        <IgnoredCustomerTable className="max-h-[80vh] my-4" />
       </div>
     </div>
   );
 };
 
-export default IgnoredClients;
+export default IgnoredCustomers;

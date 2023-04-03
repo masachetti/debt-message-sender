@@ -1,4 +1,5 @@
 import { HostDevice } from "venom-bot";
+import { TCustomer } from "./CustomerModel";
 
 export type LoggedStatusResponse = {
   status: "logged";
@@ -14,7 +15,7 @@ export type NotLoggedStatusResponse = {
 
 export type TPhoneState = "Success" | "Fail" | "NotNecessary" | null;
 export type PhoneStatesMap = Map<
-  TClient,
+  TCustomer,
   [TPhoneState, TPhoneState, TPhoneState]
 >;
 

@@ -1,25 +1,25 @@
 import { useState } from "react";
-import { TBill, TClient } from "../types/ClienteModel";
-import mockData from "./clients.json";
+import { TBill, TCustomer } from "../types/CustomerModel";
+import mockData from "./customers.json";
 
-export function useMockClients() {
-  const [data] = useState<TClient[]>(() => {
-    let clients = mockData.clients;
-    return clients.map(convertClient);
+export function useMockCustomers() {
+  const [data] = useState<TCustomer[]>(() => {
+    let customers = mockData.clients;
+    return customers.map(convertCustomer);
   });
 
   console.log("Inside mocked Data > Data > ", data);
   return { data };
 }
 
-function convertClient(client: typeof mockData.clients[0]): TClient {
+function convertCustomer(customer: typeof mockData.clients[0]): TCustomer {
   return {
-    clientId: client.cpf_cnpj,
-    firstPhone: client.telefone_primario,
-    secondPhone: client.telefone_secundario,
-    thirdPhone: client.telefone_terciario,
-    name: client.nome_razaosocial,
-    bills: client.faturas.map(convertBill),
+    customerId: customer.cpf_cnpj,
+    firstPhone: customer.telefone_primario,
+    secondPhone: customer.telefone_secundario,
+    thirdPhone: customer.telefone_terciario,
+    name: customer.nome_razaosocial,
+    bills: customer.faturas.map(convertBill),
   };
 }
 

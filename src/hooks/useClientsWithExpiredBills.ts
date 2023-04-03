@@ -1,24 +1,24 @@
 import { useState } from "react";
 import { getCobrancas } from "../api/cobrancas";
-import { getFaturasCliente } from "../api/faturas";
+import { getCustomerBills } from "../api/faturas";
 import { useAuth } from "../context/tokenContext";
-import { createClient } from "../models/Client";
+import { createCustomer } from "../models/Customer";
 import {
   CobrancasResponse,
   TCliente,
 } from "../types/ApiResponses";
-import { TClient } from "../types/ClienteModel";
+import { TCustomer } from "../types/CustomerModel";
 
-function getUniqueClients(clients: TCliente[]) {
-  return clients.filter(
+function getUniqueCustomers(customers: TCliente[]) {
+  return customers.filter(
     (value, index, self) =>
       index === self.findIndex((t) => t.cpf_cnpj === value.cpf_cnpj)
   );
 }
 
-export function useClientsWithExpiredBills() {
+export function useCustomersWithExpiredBills() {
   const { token } = useAuth();
-  const [data, setData] = useState<TClient[] | null>(null);
+  const [data, setData] = useState<TCustomer[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [fetching, setFetching] = useState(false);
 
@@ -26,25 +26,25 @@ export function useClientsWithExpiredBills() {
     if (!data && !fetching) {
       setFetching(true);
       getCobrancas(token).then(async (data: CobrancasResponse) => {
-        let clientList = data.cobrancas.data.map(
+        let customerList = data.cobrancas.data.map(
           (d) => d.cliente_servico.cliente
         );
-        let uniqueClients = getUniqueClients(clientList);
+        let uniqueCustomers = getUniqueCustomers(customerList);
 
-        let clientsWithExpiredBills: TClient[] = [];
-        clientsWithExpiredBills = await Promise.all(
-          uniqueClients.map(
-            async (client) =>
-              getFaturasCliente({
+        let customersWithExpiredBills: TCustomer[] = [];
+        customersWithExpiredBills = await Promise.all(
+          uniqueCustomers.map(
+            async (customer) =>
+              getCustomerBills({
                 token,
-                clientDocument: client.cpf_cnpj,
+                customerDocument: customer.cpf_cnpj,
               }).then((faturaResponse) =>
-                createClient({ clientData: client, billsData: faturaResponse })
+                createCustomer({ customerData: customer, billsData: faturaResponse })
               )
           )
         );
-        console.log(clientsWithExpiredBills);
-        setData(clientsWithExpiredBills);
+        console.log(customersWithExpiredBills);
+        setData(customersWithExpiredBills);
         setLoading(false);
       });
     }

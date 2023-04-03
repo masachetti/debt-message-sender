@@ -1,55 +1,56 @@
 import React, { useState } from "react";
 import WppTable from "./WppTable";
-import { TClient } from "../types/ClienteModel";
-import { useClientsSelection } from "../context/clientsContext";
-import { useIgnoredClients } from "../context/ignoredClientsContext";
+import { TCustomer } from "../types/CustomerModel";
+import { useCustomersSelection } from "../context/customersContext";
+import { useIgnoredCustomers } from "../context/ignoredCustomersContext";
 import { useMessages } from "../hooks/useMessages";
 import { PhoneStatesMap } from "../types/Wpp";
 import { Link } from "react-router-dom";
 import ArrowBackIcon from "./icons/ArrowBack";
 import { ClientInfo } from "whatsapp-web.js";
 
-const WppMain = ({ wppClientInfo }: { wppClientInfo: ClientInfo }) => {
-  const { clientList, clientsMap, billsMap } = useClientsSelection();
-  const { ignoredClients } = useIgnoredClients();
+const WppMain = ({ wppCustomerInfo }: { wppCustomerInfo: ClientInfo }) => {
+  const { 
+    customerList, customersMap, billsMap } = useCustomersSelection();
+  const { ignoredCustomers } = useIgnoredCustomers();
 
   const [phones, setPhones] = useState<PhoneStatesMap>(() => {
-    return new Map(clientList.map((client) => [client, [null, null, null]]));
+    return new Map(customerList!.map((customer) => [customer, [null, null, null]]));
   });
 
-  let selectedClients = clientList.filter((client) => {
-    let isSelected = clientsMap?.get(client);
+  let selectedCustomers = customerList!.filter((customer) => {
+    let isSelected = customersMap?.get(customer);
     if (!isSelected) return false;
-    let isIgnored = ignoredClients.find(
-      (iClient) => iClient.clientId === client.clientId
+    let isIgnored = ignoredCustomers.find(
+      (iCustomer) => iCustomer.customerId === customer.customerId
     );
     return !isIgnored;
   });
 
-  const selectedBillsMappedByClient = new Map(
-    selectedClients.map((client) => [
-      client,
-      client.bills.filter(billsMap!.get.bind(billsMap)),
+  const selectedBillsMappedByCustomer = new Map(
+    selectedCustomers.map((customer) => [
+      customer,
+      customer.bills.filter(billsMap!.get.bind(billsMap)),
     ])
   );
 
-  const messages = useMessages(selectedBillsMappedByClient);
+  const messages = useMessages(selectedBillsMappedByCustomer);
 
   const startSendingMessages = () => {
-    selectedClients.forEach((client) => {
-      // let clientPhones = [
-      //   client.firstPhone,
-      //   client.secondPhone,
-      //   client.thirdPhone,
+    selectedCustomers.forEach((customer) => {
+      // let customerPhones = [
+      //   customer.firstPhone,
+      //   customer.secondPhone,
+      //   customer.thirdPhone,
       // ];
-      let clientPhones = ["00000000000", "65999252721", "99999999999"];
-      clientPhones.every(async (phone, index) => {
+      let customerPhones = ["00000000000", "65999252721", "99999999999"];
+      customerPhones.every(async (phone, index) => {
         if (phone) {
           let isMsgSended = await electronApi.sendWppMessage(
             phone,
-            messages.get(client)!
+            messages.get(customer)!
           );
-          let prevPhoneState = phones.get(client);
+          let prevPhoneState = phones.get(customer);
           if (!isMsgSended) {
             prevPhoneState![index] = "Fail";
             setPhones(new Map(phones));
@@ -78,15 +79,15 @@ const WppMain = ({ wppClientInfo }: { wppClientInfo: ClientInfo }) => {
           WhatsApp Logado!
         </p>
         <p>
-          <b>Nome do usuário:</b> {wppClientInfo?.pushname}
+          <b>Nome do usuário:</b> {wppCustomerInfo?.pushname}
         </p>
         <p>
-          <b>Telefone:</b> {wppClientInfo?.wid.user}
+          <b>Telefone:</b> {wppCustomerInfo?.wid.user}
         </p>
       </div>
       <WppTable
         messages={messages}
-        selectedBillsByClient={selectedBillsMappedByClient}
+        selectedBillsByCustomer={selectedBillsMappedByCustomer}
         phonesState={phones}
       ></WppTable>
       <button className="GreenButton" onClick={startSendingMessages}>

@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import FaturasTable from "../components/FaturasTable";
 import { useParams } from "react-router-dom";
-import { useClientsSelection } from "../context/clientsContext";
+import { useCustomersSelection } from "../context/customersContext";
 import ArrowBackIcon from "../components/icons/ArrowBack";
 import { Link } from "react-router-dom";
 
-const ClientDataView = () => {
-  const { clientId } = useParams();
-  const { clientsMap } = useClientsSelection();
-  const clientData = [...clientsMap!.keys()].find(
-    (client) => client.clientId === clientId
+const CustomerDataView = () => {
+  const { customerId } = useParams();
+  const { customersMap: customersMap } = useCustomersSelection();
+  const customerData = [...customersMap!.keys()].find(
+    (customer) => customer.customerId === customerId
   );
 
   const [notifyCopyResult, setNotifyCopyResult] = useState<
@@ -51,21 +51,21 @@ const ClientDataView = () => {
       <Link to={"/"} className="self-start mb-5 mt-0 text-zinc-700">
         <ArrowBackIcon size={30}></ArrowBackIcon>
       </Link>
-      {clientData && (
+      {customerData && (
         <>
           <div className="rounded-md border bg-gray-400 py-4 px-8 h-fit w-full">
             <p>
-              <b>Nome:</b> {clientData.name}
+              <b>Nome:</b> {customerData.name}
             </p>
             <p>
-              <b>Documento:</b> {clientData.clientId}
+              <b>Documento:</b> {customerData.customerId}
             </p>
             <p>
-              <b>Telefone:</b> {clientData.firstPhone}
+              <b>Telefone:</b> {customerData.firstPhone}
             </p>
           </div>
           <FaturasTable
-            client={clientData}
+            customer={customerData}
             className="max-h-[50vh] my-4"
             onCopyToClipboardFail={() => {
               notifyCopy("fail", 1000);
@@ -81,4 +81,4 @@ const ClientDataView = () => {
   );
 };
 
-export default ClientDataView;
+export default CustomerDataView;

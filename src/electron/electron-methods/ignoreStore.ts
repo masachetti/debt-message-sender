@@ -15,7 +15,7 @@ export const addToIgnoreList = (
   user: IgnoredUser
 ) => {
   let blackList = ignoreListStore.get("ignoreList");
-  if (blackList!.find((v) => v.clientId === user.clientId)) return blackList;
+  if (blackList!.find((v) => v.customerId === user.customerId)) return blackList;
   let newBlackList = [...blackList!, user];
   ignoreListStore.set("ignoreList", newBlackList);
   return newBlackList;
@@ -26,7 +26,7 @@ export const removeFromIgnoreList = (
   user: IgnoredUser
 ) => {
   let blackList = ignoreListStore.get("ignoreList");
-  let newBlackList = blackList!.filter((v) => v.clientId !== user.clientId);
+  let newBlackList = blackList!.filter((v) => v.customerId !== user.customerId);
   ignoreListStore.set("ignoreList", newBlackList);
   return newBlackList;
 };

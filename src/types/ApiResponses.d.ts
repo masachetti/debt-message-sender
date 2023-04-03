@@ -36,7 +36,7 @@ export type TCliente = {
   [string]: any;
 };
 
-export type FaturasClienteResponse = {
+export type CustomerBillsResponse = {
   faturas: TFatura[];
   status: string;
   msg: string;
