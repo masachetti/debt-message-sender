@@ -1,4 +1,4 @@
-const baseURL = `${process.env.REACT_APP_API_URL}/api/v1/integracao/Customere/financeiro?`;
+const baseURL = `${process.env.REACT_APP_API_URL}/api/v1/integracao/cliente/financeiro?`;
 
 type FetchCustomerDebtsParams = { token: string; customerDocument: string };
 
