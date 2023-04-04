@@ -9,7 +9,7 @@ const cellExit = { padding: 0 };
 const cellDivExit = { maxHeight: 0 };
 const rowExit = { transform: "translate(100%, 0)" };
 
-const IgnoredCustomerTable = ({ className = "" }) => {
+const IgnoredCustomersTable = ({ className = "" }) => {
   const { ignoredCustomers, removeCustomerFromIgnored } = useIgnoredCustomers();
   const { orderedContent, toggleOrdering, icons } = useOrderedTable(
     ignoredCustomers,
@@ -17,7 +17,7 @@ const IgnoredCustomerTable = ({ className = "" }) => {
     18
   );
   return (
-    <div className={`IgnoredCustomerTable ${className}`}>
+    <div className={`IgnoredCustomersTable ${className}`}>
       <table>
         <thead>
           <tr className="[&>th]:bg-neutral-600 [&>th]:text-white">
@@ -76,4 +76,4 @@ const IgnoredCustomerTable = ({ className = "" }) => {
   );
 };
 
-export default IgnoredCustomerTable;
+export default IgnoredCustomersTable;

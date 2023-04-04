@@ -38,35 +38,35 @@
     box-shadow: inset 1px 0 #000;
   }
 
-  .CustomerTable{
+  .CustomersTable{
     @apply TableFixedHeader border w-fit overflow-x-hidden rounded-md;
   }
 
-  .CustomerTable thead th {
+  .CustomersTable thead th {
     box-shadow: inset 3px 3px white, inset 0 -3px white;
   }
 
-  .CustomerTable td {
+  .CustomersTable td {
     box-shadow: inset 3px 3px white;
   }
 
-  .CustomerTable tbody tr:first-child td {
+  .CustomersTable tbody tr:first-child td {
     box-shadow: inset 3px 0 white;
   }
 
-  .IgnoredCustomerTable {
+  .IgnoredCustomersTable {
     @apply TableFixedHeader border w-fit overflow-x-hidden rounded-md;
   }
 
-  .IgnoredCustomerTable thead th {
+  .IgnoredCustomersTable thead th {
     box-shadow: inset 3px 3px white, inset 0 -3px white;
   }
 
-  .IgnoredCustomerTable td {
+  .IgnoredCustomersTable td {
     box-shadow: inset 3px 3px white;
   }
 
-  .IgnoredCustomerTable tbody tr:first-child td {
+  .IgnoredCustomersTable tbody tr:first-child td {
     box-shadow: inset 3px 0 white;
   }
 

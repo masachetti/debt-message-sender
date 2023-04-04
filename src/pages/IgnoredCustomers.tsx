@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import IgnoredCustomerTable from "../components/IgnoredCustomerTable";
+import IgnoredCustomersTable from "../components/IgnoredCustomersTable";
 import { Link } from "react-router-dom";
 
 const IgnoredCustomers = () => {
@@ -25,7 +25,7 @@ const IgnoredCustomers = () => {
             </button>
           </Link>
         </div>
-        <IgnoredCustomerTable className="max-h-[80vh] my-4" />
+        <IgnoredCustomersTable className="max-h-[80vh] my-4" />
       </div>
     </div>
   );

@@ -48,7 +48,7 @@ const WppTable = ({
 
   return (
     <>
-      <div className={`CustomerTable ${className}`}>
+      <div className={`CustomersTable ${className}`}>
         <table>
           <thead>
             <tr className="[&>th]:bg-indigo-600 [&>th]:text-white">
