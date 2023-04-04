@@ -25,7 +25,9 @@ export const CustomersSelectionProvider: React.FC<React.PropsWithChildren> = ({
     useState<CustomerSelectionContextValue["debtsMap"]>(null);
 
   if (!isFetching && !customersMap) {
-    const _customersMap = new Map(customers.map((customer) => [customer, false]));
+    const _customersMap = new Map(
+      customers.map((customer) => [customer, false])
+    );
     const debts = customers.map((customer) => customer.debts).flat();
     const _debtsMap = new Map(debts.map((debt) => [debt, true]));
     setCustomersMap(_customersMap);
@@ -46,9 +48,7 @@ export const CustomersSelectionProvider: React.FC<React.PropsWithChildren> = ({
     if ([...customersMap!.values()].every((v) => v)) {
       stateForAllSelections = false;
     }
-    [...customersMap!.keys()].forEach((k) =>
-      customersMap!.set(k, stateForAllSelections)
-    );
+    customers.forEach((k) => customersMap!.set(k, stateForAllSelections));
     updateCustomersMap();
   };
 
