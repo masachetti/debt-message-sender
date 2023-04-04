@@ -1,5 +1,5 @@
 {
-  "name": "satt-bill-msg-sender",
+  "name": "debt-message-sender",
   "version": "1.0.0",
   "description": "",
   "main": "./dist/electron/electron.js",
