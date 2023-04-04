@@ -9,31 +9,32 @@ import {
   makeDateFromBrDateString,
 } from "../utils/date";
 
-interface BillsTableProps {
+interface DebtsTableProps {
   customer: Customer;
   className?: string;
   onCopyToClipboardSuccess?: () => void;
   onCopyToClipboardFail?: () => void;
 }
 
-const BillsTable: React.FC<BillsTableProps> = ({
+const DebtsTable: React.FC<DebtsTableProps> = ({
   customer,
   className = "",
   onCopyToClipboardFail,
   onCopyToClipboardSuccess,
 }) => {
-  const { toggleAllCustomerBills: toggleAllCustomerBills, toggleBill, billsMap } = useCustomersSelection();
-  let { bills } = customer;
+  const { toggleAllCustomerDebts, toggleDebt, debtsMap } =
+    useCustomersSelection();
+  let { debts } = customer;
 
-  const [isBillDetailsOpen, setIsBillDetailsOpen] = useState(() => {
-    let billDetailsMap = new Map<Debt, boolean>(
-      bills.map((bill) => [bill, false])
+  const [isDebtDetailsOpen, setIsDebtDetailsOpen] = useState(() => {
+    let debtDetailsMap = new Map<Debt, boolean>(
+      debts.map((debt) => [debt, false])
     );
-    return billDetailsMap;
+    return debtDetailsMap;
   });
 
-  function copyBarCodeToClipboard(bill: Debt) {
-    navigator.clipboard.writeText(bill.barCode).then(
+  function copyBarCodeToClipboard(debt: Debt) {
+    navigator.clipboard.writeText(debt.barCode).then(
       () => {
         if (onCopyToClipboardSuccess) onCopyToClipboardSuccess();
       },
@@ -43,19 +44,19 @@ const BillsTable: React.FC<BillsTableProps> = ({
     );
   }
 
-  function toggleBillDetails(bill: Debt) {
-    let prev = isBillDetailsOpen.get(bill)
-    isBillDetailsOpen.set(bill, !prev);
-    setIsBillDetailsOpen(new Map(isBillDetailsOpen));
+  function toggleDebtDetails(debt: Debt) {
+    let prev = isDebtDetailsOpen.get(debt);
+    isDebtDetailsOpen.set(debt, !prev);
+    setIsDebtDetailsOpen(new Map(isDebtDetailsOpen));
   }
 
   return (
-    <div className={`BillTable ${className}`}>
+    <div className={`DebtsTable ${className}`}>
       <table>
         <thead>
           <tr className="[&>th]:bg-gray-400">
             <th
-              onDoubleClick={() => toggleAllCustomerBills(customer)}
+              onDoubleClick={() => toggleAllCustomerDebts(customer)}
               onMouseDown={(ev) => ev.preventDefault()}
             >
               Check
@@ -69,20 +70,20 @@ const BillsTable: React.FC<BillsTableProps> = ({
           </tr>
         </thead>
         <tbody>
-          {bills.map((bill) => (
-            <Fragment key={bill.billId}>
+          {debts.map((debt) => (
+            <Fragment key={debt.debtId}>
               <tr>
-                <td onClick={() => toggleBill(bill)}>
+                <td onClick={() => toggleDebt(debt)}>
                   <input
                     type="checkbox"
-                    checked={billsMap!.get(bill)}
+                    checked={debtsMap!.get(debt)}
                     onChange={() => {}}
                   />
                 </td>
-                <td colSpan={2}>{bill.dueDate}</td>
+                <td colSpan={2}>{debt.dueDate}</td>
                 <td>
                   {calculateDifferenceBetweenDates(
-                    makeDateFromBrDateString(bill.dueDate),
+                    makeDateFromBrDateString(debt.dueDate),
                     new Date()
                   )}
                 </td>
@@ -90,19 +91,19 @@ const BillsTable: React.FC<BillsTableProps> = ({
                   <a
                     className="flex justify-center"
                     target="_blank"
-                    href={bill.link}
+                    href={debt.link}
                   >
                     <LinkIcon strokeWidth={1} />
                   </a>
                 </td>
-                <td onClick={() => copyBarCodeToClipboard(bill)}>
+                <td onClick={() => copyBarCodeToClipboard(debt)}>
                   <div className="flex justify-center cursor-pointer">
                     <CopyIcon strokeWidth={1} />
                   </div>
                 </td>
-                <td>{"R$" + bill.value}</td>
+                <td>{"R$" + debt.value}</td>
                 <td
-                  onClick={() => toggleBillDetails(bill)}
+                  onClick={() => toggleDebtDetails(debt)}
                   className="flex justify-center"
                 >
                   <motion.div
@@ -111,15 +112,19 @@ const BillsTable: React.FC<BillsTableProps> = ({
                       open: { transform: "rotate(180deg)" },
                       closed: { transform: "rotate(0deg)" },
                     }}
-                    animate={isBillDetailsOpen.get(bill) ? "open" : "closed"}
+                    animate={isDebtDetailsOpen.get(debt) ? "open" : "closed"}
                     transition={{ duration: 0.3 }}
                   >
-                    <ChevronDownIcon strokeWidth={1} size={25} className="cursor-pointer"/>
+                    <ChevronDownIcon
+                      strokeWidth={1}
+                      size={25}
+                      className="cursor-pointer"
+                    />
                   </motion.div>
                 </td>
               </tr>
               <AnimatePresence>
-                {isBillDetailsOpen.get(bill) && (
+                {isDebtDetailsOpen.get(debt) && (
                   <tr className="[&>td]:bg-stone-400">
                     <td className="p-0"></td>
                     <motion.td
@@ -138,7 +143,7 @@ const BillsTable: React.FC<BillsTableProps> = ({
                         transition={{ duration: 0.3 }}
                       >
                         <ul>
-                          {bill.details.map((detail, index) => (
+                          {debt.details.map((detail, index) => (
                             <li key={index}>{detail.description}</li>
                           ))}
                         </ul>
@@ -155,4 +160,4 @@ const BillsTable: React.FC<BillsTableProps> = ({
   );
 };
 
-export default BillsTable;
+export default DebtsTable;

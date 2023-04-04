@@ -3,7 +3,7 @@ export const createCustomer: CreateCustomer = ({ customerData, debtsData }) => {
   let debts: Array<Debt> = debtsData.faturas.map((debt) => ({
     barCode: debt.codigo_barras,
     dueDate: debt.data_vencimento,
-    billId: debt.id_fatura,
+    debtId: debt.id_fatura,
     link: debt.link,
     status: debt.status,
     value: debt.valor,

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { getCobrancas } from "../api/cobrancas";
-import { getCustomerBills } from "../api/bills";
+import { getCobrancas } from "../api/bills";
+import { getCustomerDebts } from "../api/debts";
 import { useAuth } from "../context/tokenContext";
 import { createCustomer } from "../models/Customer";
 
@@ -11,7 +11,7 @@ function getUniqueCustomers(customers: Array<ApiCustomer>) {
   );
 }
 
-export function useCustomersWithExpiredBills() {
+export function useCustomersWithExpiredDebts() {
   const { token } = useAuth();
   const [data, setData] = useState<Array<Customer> | null>(null);
   const [loading, setLoading] = useState(true);
@@ -26,10 +26,10 @@ export function useCustomersWithExpiredBills() {
         );
         let uniqueCustomers = getUniqueCustomers(customerList);
 
-        let customersWithExpiredBills: Array<Customer> = [];
-        customersWithExpiredBills = await Promise.all(
+        let customersWithExpiredDebts: Array<Customer> = [];
+        customersWithExpiredDebts = await Promise.all(
           uniqueCustomers.map(async (customer) =>
-            getCustomerBills({
+            getCustomerDebts({
               token,
               customerDocument: customer.cpf_cnpj,
             }).then((debtsResponse) =>
@@ -40,8 +40,8 @@ export function useCustomersWithExpiredBills() {
             )
           )
         );
-        console.log(customersWithExpiredBills);
-        setData(customersWithExpiredBills);
+        console.log(customersWithExpiredDebts);
+        setData(customersWithExpiredDebts);
         setLoading(false);
       });
     }

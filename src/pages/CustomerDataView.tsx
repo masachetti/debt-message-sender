@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import BillsTable from "../components/BillsTable";
+import DebtsTable from "../components/DebtsTable";
 import { useParams } from "react-router-dom";
 import { useCustomersSelection } from "../context/customersContext";
 import ArrowBackIcon from "../components/icons/ArrowBack";
@@ -64,7 +64,7 @@ const CustomerDataView = () => {
               <b>Telefone:</b> {customerData.firstPhone}
             </p>
           </div>
-          <BillsTable
+          <DebtsTable
             customer={customerData}
             className="max-h-[50vh] my-4"
             onCopyToClipboardFail={() => {

@@ -29,7 +29,7 @@ const CustomersTable = ({
 
   const { orderedContent, toggleOrdering, icons } = useOrderedTable(
     allowedCustomers,
-    ["name", "bills"],
+    ["name", "debts"],
     18
   );
 
@@ -63,9 +63,9 @@ const CustomersTable = ({
                 Faturas Vencidas
                 <div
                   className="absolute top-1 right-0 cursor-pointer"
-                  onClick={() => toggleOrdering("bills")}
+                  onClick={() => toggleOrdering("debts")}
                 >
-                  {icons["bills"]}
+                  {icons["debts"]}
                 </div>
               </div>
             </th>
@@ -123,7 +123,7 @@ const CustomersTable = ({
                     exit={cellDivExit}
                     transition={rowTransition}
                   >
-                    {customer.bills.length}
+                    {customer.debts.length}
                   </motion.div>
                 </motion.td>
                 <motion.td exit={cellExit} transition={rowTransition}>

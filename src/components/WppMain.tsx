@@ -8,7 +8,7 @@ import ArrowBackIcon from "./icons/ArrowBack";
 import { ClientInfo } from "whatsapp-web.js";
 
 const WppMain = ({ wppCustomerInfo }: { wppCustomerInfo: ClientInfo }) => {
-  const { customerList, customersMap, billsMap } = useCustomersSelection();
+  const { customerList, customersMap, debtsMap } = useCustomersSelection();
   const { ignoredCustomers } = useIgnoredCustomers();
 
   const [phones, setPhones] = useState<PhoneStatesMap>(() => {
@@ -26,14 +26,14 @@ const WppMain = ({ wppCustomerInfo }: { wppCustomerInfo: ClientInfo }) => {
     return !isIgnored;
   });
 
-  const selectedBillsMappedByCustomer = new Map(
+  const selectedDebtsMappedByCustomer = new Map(
     selectedCustomers.map((customer) => [
       customer,
-      customer.bills.filter(billsMap!.get.bind(billsMap)),
+      customer.debts.filter(debtsMap!.get.bind(debtsMap)),
     ])
   );
 
-  const messages = useMessages(selectedBillsMappedByCustomer);
+  const messages = useMessages(selectedDebtsMappedByCustomer);
 
   const startSendingMessages = () => {
     selectedCustomers.forEach((customer) => {
@@ -86,7 +86,7 @@ const WppMain = ({ wppCustomerInfo }: { wppCustomerInfo: ClientInfo }) => {
       </div>
       <WppTable
         messages={messages}
-        selectedBillsByCustomer={selectedBillsMappedByCustomer}
+        selectedDebtsByCustomer={selectedDebtsMappedByCustomer}
         phonesState={phones}
       ></WppTable>
       <button className="GreenButton" onClick={startSendingMessages}>

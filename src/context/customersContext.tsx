@@ -1,16 +1,16 @@
 import React, { useContext, useState } from "react";
-import { useCustomersWithExpiredBills } from "../hooks/useCostumersWithExpiredBills";
+import { useCustomersWithExpiredDebts } from "../hooks/useCostumersWithExpiredDebts";
 import { useMockCustomers } from "../hooks/useMockCustomers";
 
 interface ICustomersContext {
   loading: boolean;
   customerList: Array<Customer> | null;
   customersMap: Map<Customer, boolean> | null;
-  billsMap: Map<Debt, boolean> | null;
+  debtsMap: Map<Debt, boolean> | null;
   toggleCustomer: (customer: Customer) => void;
   toggleAllCustomers: () => void;
-  toggleBill: (bill: Debt) => void;
-  toggleAllCustomerBills: (customer: Customer) => void;
+  toggleDebt: (debt: Debt) => void;
+  toggleAllCustomerDebts: (customer: Customer) => void;
 }
 
 const CustomersSelectionContext = React.createContext<ICustomersContext | null>(
@@ -20,25 +20,25 @@ const CustomersSelectionContext = React.createContext<ICustomersContext | null>(
 export const CustomersSelectionProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const { data, loading } = useCustomersWithExpiredBills();
+  const { data, loading } = useCustomersWithExpiredDebts();
   // const { data } = useMockCustomers();
   // let loading = false;
 
   const [customersMap, setCustomersMap] =
     useState<ICustomersContext["customersMap"]>(null);
 
-  const [billsMap, setBillsMap] = useState<ICustomersContext["billsMap"]>(null);
+  const [debtsMap, setDebtsMap] = useState<ICustomersContext["debtsMap"]>(null);
 
   if (!loading && !customersMap) {
     const _customersMap = new Map(data!.map((customer) => [customer, false]));
-    const bills = data!.map((customer) => customer.bills).flat();
-    const _billsMap = new Map(bills.map((bill) => [bill, true]));
+    const debts = data!.map((customer) => customer.debts).flat();
+    const _debtsMap = new Map(debts.map((debt) => [debt, true]));
     setCustomersMap(_customersMap);
-    setBillsMap(_billsMap);
+    setDebtsMap(_debtsMap);
   }
 
   const updateCustomersMap = () => setCustomersMap(new Map(customersMap));
-  const updateBillsMap = () => setBillsMap(new Map(billsMap));
+  const updateDebtsMap = () => setDebtsMap(new Map(debtsMap));
 
   const toggleCustomer = (customer: Customer) => {
     let prev = customersMap!.get(customer);
@@ -57,34 +57,34 @@ export const CustomersSelectionProvider: React.FC<React.PropsWithChildren> = ({
     updateCustomersMap();
   };
 
-  const toggleBill = (bill: Debt) => {
-    let prev = billsMap!.get(bill);
-    billsMap!.set(bill, !prev);
-    updateBillsMap();
+  const toggleDebt = (debt: Debt) => {
+    let prev = debtsMap!.get(debt);
+    debtsMap!.set(debt, !prev);
+    updateDebtsMap();
   };
 
-  const toggleAllCustomerBills = (customer: Customer) => {
-    let stateForAllBills = true;
-    let stateOfCustomerBills = customer.bills.map((k) => billsMap!.get(k));
+  const toggleAllCustomerDebts = (customer: Customer) => {
+    let stateForAllDebts = true;
+    let stateOfCustomerDebts = customer.debts.map((k) => debtsMap!.get(k));
 
-    if (stateOfCustomerBills.every((v) => v)) {
-      stateForAllBills = false;
+    if (stateOfCustomerDebts.every((v) => v)) {
+      stateForAllDebts = false;
     }
-    customer.bills.forEach((k) => billsMap!.set(k, stateForAllBills));
-    updateBillsMap();
+    customer.debts.forEach((k) => debtsMap!.set(k, stateForAllDebts));
+    updateDebtsMap();
   };
 
   const customerList = data;
-  
+
   let value = {
     customerList,
     customersMap: customersMap,
-    billsMap,
+    debtsMap,
     loading,
     toggleCustomer: toggleCustomer,
     toggleAllCustomers,
-    toggleBill,
-    toggleAllCustomerBills,
+    toggleDebt,
+    toggleAllCustomerDebts,
   };
   return (
     <CustomersSelectionContext.Provider value={value}>

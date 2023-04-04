@@ -22,19 +22,19 @@
     @apply py-2 px-4;
   }
 
-  .BillTable {
+  .DebtsTable {
     @apply TableFixedHeader border-2 w-fit overflow-x-hidden rounded-md;
   }
 
-  .BillTable thead th {
+  .DebtsTable thead th {
     box-shadow: inset 1px 1px #000, inset 0 -1px #000;
   }
 
-  .BillTable td {
+  .DebtsTable td {
     box-shadow: inset 1px 1px #000;
   }
 
-  .BillTable tbody tr:first-child td {
+  .DebtsTable tbody tr:first-child td {
     box-shadow: inset 1px 0 #000;
   }
 

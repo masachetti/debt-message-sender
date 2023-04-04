@@ -7,32 +7,32 @@ import DashIcon from "./icons/Dash";
 
 interface WppTableProps {
   className?: string;
-  selectedBillsByCustomer: Map<Customer, Array<Debt>>;
+  selectedDebtsByCustomer: Map<Customer, Array<Debt>>;
   messages: Map<Customer, string>;
   phonesState: PhoneStatesMap;
 }
 
 function createPhoneRep(
-  phoneState: PhoneState ,
+  phoneState: PhoneState,
   customerPhone: Customer["secondPhone"]
 ) {
   const rep = (content: JSX.Element) => (
     <div className="flex justify-center max-h-12">{content}</div>
   );
   if (phoneState === "Success")
-    return rep(<CheckIcon className="text-green-600" size={46}/>);
+    return rep(<CheckIcon className="text-green-600" size={46} />);
   if (phoneState === "Fail") {
-    return rep(<XIcon className="text-red-600" size={46}/>);
+    return rep(<XIcon className="text-red-600" size={46} />);
   }
   if (phoneState === "NotNecessary" || !!!customerPhone) {
-    return rep(<DashIcon className="text-gray-600" size={46}/>);
+    return rep(<DashIcon className="text-gray-600" size={46} />);
   }
   return rep(<>{customerPhone}</>);
 }
 
 const WppTable = ({
   className = "",
-  selectedBillsByCustomer,
+  selectedDebtsByCustomer,
   messages,
   phonesState,
 }: WppTableProps) => {
@@ -44,7 +44,7 @@ const WppTable = ({
 
   const closeMessagePreview = () => setCustomerToShowMessagePreview(null);
 
-  const customers = [...selectedBillsByCustomer.keys()];
+  const customers = [...selectedDebtsByCustomer.keys()];
 
   return (
     <>
@@ -66,7 +66,7 @@ const WppTable = ({
                 <td colSpan={2}>{customer.name}</td>
                 <td>
                   <div className="flex justify-center max-h-12">
-                    {selectedBillsByCustomer.get(customer)!.length}
+                    {selectedDebtsByCustomer.get(customer)!.length}
                   </div>
                 </td>
                 <td>
@@ -77,9 +77,24 @@ const WppTable = ({
                     <CardTextIcon size={35} className={"cursor-pointer"} />
                   </div>
                 </td>
-                <td>{createPhoneRep(phonesState.get(customer)![0], customer.firstPhone)}</td>
-                <td>{createPhoneRep(phonesState.get(customer)![1], customer.secondPhone)}</td>
-                <td>{createPhoneRep(phonesState.get(customer)![2], customer.thirdPhone)}</td>
+                <td>
+                  {createPhoneRep(
+                    phonesState.get(customer)![0],
+                    customer.firstPhone
+                  )}
+                </td>
+                <td>
+                  {createPhoneRep(
+                    phonesState.get(customer)![1],
+                    customer.secondPhone
+                  )}
+                </td>
+                <td>
+                  {createPhoneRep(
+                    phonesState.get(customer)![2],
+                    customer.thirdPhone
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
