@@ -7,7 +7,6 @@ import {
   removeFromIgnoreList,
 } from "./electron-methods/ignoreStore";
 import { startWpp, closeWpp, sendMessage } from "./electron-methods/wpp";
-import { WppStatusResponse } from "../types/Wpp";
 
 const env = process.env.NODE_ENV || "development";
 
@@ -44,7 +43,7 @@ function configureChannels() {
   ipcMain.handle(IpcChannels.GetIgnoreList, getIgnoreList);
   ipcMain.handle(IpcChannels.AddToIgnoreList, addToIgnoreList);
   ipcMain.handle(IpcChannels.RemoveFromIgnoreList, removeFromIgnoreList);
-  ipcMain.handle(IpcChannels.WppSendMessage, sendMessage)
+  ipcMain.handle(IpcChannels.WppSendMessage, sendMessage);
   ipcMain.on(IpcChannels.StartWpp, () =>
     startWpp({
       onClientReady: (clientInfo) =>

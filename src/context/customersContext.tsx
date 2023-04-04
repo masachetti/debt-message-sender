@@ -1,17 +1,16 @@
 import React, { useContext, useState } from "react";
 import { useCustomersWithExpiredBills } from "../hooks/useCostumersWithExpiredBills";
 import { useMockCustomers } from "../hooks/useMockCustomers";
-import { TCustomer , TBill } from "../types/CustomerModel";
 
 interface ICustomersContext {
   loading: boolean;
-  customerList: Array<TCustomer> | null;
-  customersMap: Map<TCustomer, boolean> | null;
-  billsMap: Map<TBill, boolean> | null;
-  toggleCustomer: (customer: TCustomer) => void;
+  customerList: Array<Customer> | null;
+  customersMap: Map<Customer, boolean> | null;
+  billsMap: Map<Debt, boolean> | null;
+  toggleCustomer: (customer: Customer) => void;
   toggleAllCustomers: () => void;
-  toggleBill: (bill: TBill) => void;
-  toggleAllCustomerBills: (customer: TCustomer) => void;
+  toggleBill: (bill: Debt) => void;
+  toggleAllCustomerBills: (customer: Customer) => void;
 }
 
 const CustomersSelectionContext = React.createContext<ICustomersContext | null>(
@@ -41,7 +40,7 @@ export const CustomersSelectionProvider: React.FC<React.PropsWithChildren> = ({
   const updateCustomersMap = () => setCustomersMap(new Map(customersMap));
   const updateBillsMap = () => setBillsMap(new Map(billsMap));
 
-  const toggleCustomer = (customer: TCustomer) => {
+  const toggleCustomer = (customer: Customer) => {
     let prev = customersMap!.get(customer);
     customersMap!.set(customer, !prev);
     updateCustomersMap();
@@ -58,13 +57,13 @@ export const CustomersSelectionProvider: React.FC<React.PropsWithChildren> = ({
     updateCustomersMap();
   };
 
-  const toggleBill = (bill: TBill) => {
+  const toggleBill = (bill: Debt) => {
     let prev = billsMap!.get(bill);
     billsMap!.set(bill, !prev);
     updateBillsMap();
   };
 
-  const toggleAllCustomerBills = (customer: TCustomer) => {
+  const toggleAllCustomerBills = (customer: Customer) => {
     let stateForAllBills = true;
     let stateOfCustomerBills = customer.bills.map((k) => billsMap!.get(k));
 

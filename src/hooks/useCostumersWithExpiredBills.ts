@@ -3,13 +3,8 @@ import { getCobrancas } from "../api/cobrancas";
 import { getCustomerBills } from "../api/bills";
 import { useAuth } from "../context/tokenContext";
 import { createCustomer } from "../models/Customer";
-import {
-  CobrancasResponse,
-  TCliente,
-} from "../types/ApiResponses";
-import { TCustomer } from "../types/CustomerModel";
 
-function getUniqueCustomers(customers: TCliente[]) {
+function getUniqueCustomers(customers: Array<ApiCustomer>) {
   return customers.filter(
     (value, index, self) =>
       index === self.findIndex((t) => t.cpf_cnpj === value.cpf_cnpj)
@@ -18,29 +13,31 @@ function getUniqueCustomers(customers: TCliente[]) {
 
 export function useCustomersWithExpiredBills() {
   const { token } = useAuth();
-  const [data, setData] = useState<TCustomer[] | null>(null);
+  const [data, setData] = useState<Array<Customer> | null>(null);
   const [loading, setLoading] = useState(true);
   const [fetching, setFetching] = useState(false);
 
   if (token) {
     if (!data && !fetching) {
       setFetching(true);
-      getCobrancas(token).then(async (data: CobrancasResponse) => {
+      getCobrancas(token).then(async (data: ApiGetBillsResponse) => {
         let customerList = data.cobrancas.data.map(
           (d) => d.cliente_servico.cliente
         );
         let uniqueCustomers = getUniqueCustomers(customerList);
 
-        let customersWithExpiredBills: TCustomer[] = [];
+        let customersWithExpiredBills: Array<Customer> = [];
         customersWithExpiredBills = await Promise.all(
-          uniqueCustomers.map(
-            async (customer) =>
-              getCustomerBills({
-                token,
-                customerDocument: customer.cpf_cnpj,
-              }).then((billResponse) =>
-                createCustomer({ customerData: customer, billsData: billResponse })
-              )
+          uniqueCustomers.map(async (customer) =>
+            getCustomerBills({
+              token,
+              customerDocument: customer.cpf_cnpj,
+            }).then((debtsResponse) =>
+              createCustomer({
+                customerData: customer,
+                debtsData: debtsResponse,
+              })
+            )
           )
         );
         console.log(customersWithExpiredBills);

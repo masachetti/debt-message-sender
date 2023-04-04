@@ -1,16 +1,15 @@
-import { TBill, TCustomer } from "../types/CustomerModel";
 import {
   calculateDifferenceBetweenDates,
   makeDateFromBrDateString,
 } from "../utils/date";
 
-const getDaysAfterDueDate = (bill: TBill) =>
+const getDaysAfterDueDate = (bill: Debt) =>
   calculateDifferenceBetweenDates(
     makeDateFromBrDateString(bill.dueDate),
     new Date()
   );
 
-const createBillsString = (bills: Array<TBill>) => `Faturas em aberto:
+const createBillsString = (bills: Array<Debt>) => `Faturas em aberto:
 ------------------------------------------${bills
   .map(
     (bill) => `
@@ -28,7 +27,7 @@ const createFooter = (daysAfterDueDate: number) =>
     ? "-Caso ja tenha realizado o pagamento e/ou acordo, desconsidere a mensagem. Obrigado!"
     : "-Caso ja tenha realizado o pagamento, desconsidere a mensagem. Obrigado!";
 
-const messageFor3DaysAfterDueDate = (bills: Array<TBill>, footer: string) => `
+const messageFor3DaysAfterDueDate = (bills: Array<Debt>, footer: string) => `
 SATT tecnologia, provedor de internet, informa.
 
 Sua fatura esta vencida, evite a suspensão do sinal da sua internet.
@@ -38,7 +37,7 @@ ${createBillsString(bills)}
 ${footer}
 `;
 
-const messageFor5DaysAfterDueDate = (bills: Array<TBill>, footer: string) => `
+const messageFor5DaysAfterDueDate = (bills: Array<Debt>, footer: string) => `
 SATT tecnologia, provedor de internet, informa.
 
 Sua fatura esta vencida a 05 dias, hoje é dia da suspensão do sinal da internet.
@@ -52,7 +51,7 @@ ${createBillsString(bills)}
 ${footer}
 `;
 
-const messageFor6DaysAfterDueDate = (bills: Array<TBill>, footer: string) => `
+const messageFor6DaysAfterDueDate = (bills: Array<Debt>, footer: string) => `
 SATT tecnologia, provedor de internet, informa.
 
 Devido a fatura em atraso a sua internet foi suspensa.
@@ -66,7 +65,7 @@ ${createBillsString(bills)}
 ${footer}
 `;
 
-const messageFor15DaysAfterDueDate = (bills: Array<TBill>, footer: string) => `
+const messageFor15DaysAfterDueDate = (bills: Array<Debt>, footer: string) => `
 SATT tecnologia, provedor de internet, informa.
 
 AVISO
@@ -79,7 +78,7 @@ ${createBillsString(bills)}
 ${footer}
 `;
 
-const messageFor30DaysAfterDueDate = (bills: Array<TBill>, footer: string) => `
+const messageFor30DaysAfterDueDate = (bills: Array<Debt>, footer: string) => `
 SATT tecnologia, provedor de internet, informa.
 
 AVISO URGENTE
@@ -96,7 +95,7 @@ ${createBillsString(bills)}
 ${footer}
 `;
 
-function createMessage(customer: TCustomer, customerBills: Array<TBill>) {
+function createMessage(customer: Customer, customerBills: Array<Debt>) {
   let billsDaysAfterDueDate = customerBills.map(getDaysAfterDueDate);
   let higherDaysAfterDueDate = Math.max(...billsDaysAfterDueDate);
 
@@ -116,8 +115,8 @@ function createMessage(customer: TCustomer, customerBills: Array<TBill>) {
 }
 
 export function useMessages(
-  selectedBillsByCustomer: Map<TCustomer, Array<TBill>>
-): Map<TCustomer, string> {
+  selectedBillsByCustomer: Map<Customer, Array<Debt>>
+): Map<Customer, string> {
   let messages = new Map();
   selectedBillsByCustomer.forEach((customerBills, customer) => {
     messages.set(customer, createMessage(customer, customerBills));

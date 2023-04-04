@@ -1,10 +1,8 @@
 import { app } from "electron";
 import * as path from "path";
 import * as fs from "fs";
-import {StoreProps } from "../types/store";
-import { GenericObject } from "../types/GenericObject";
 
-class Store<T extends GenericObject>{
+class Store<T extends GenericObject> {
   path: string;
   data: T;
 
@@ -14,15 +12,13 @@ class Store<T extends GenericObject>{
     this.data = parseDataFile(this.path, defaults);
   }
 
-  get(key: keyof T) { 
-    if (key in this.data){
-      return this.data[key as keyof T];
-    }
+  get<K extends keyof T>(key: K): T[K] {
+    return this.data[key];
   }
 
-  set <K extends keyof T, V extends T[K]>(key: K, value: V) {
-    if (key in this.data){
-      this.data = {...this.data, [key as keyof T]: value};
+  set<K extends keyof T, V extends T[K]>(key: K, value: V) {
+    if (key in this.data) {
+      this.data = { ...this.data, [key as keyof T]: value };
       try {
         fs.writeFileSync(this.path, JSON.stringify(this.data));
       } catch (error) {
@@ -38,6 +34,6 @@ function parseDataFile(filePath: string, defaults: GenericObject) {
   } catch {
     return defaults;
   }
-} 
+}
 
 export { Store };

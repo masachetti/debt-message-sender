@@ -4,8 +4,8 @@ import SortAscendingIcon from "../components/icons/SortAscending";
 import SortDescendingIcon from "../components/icons/SortDescending";
 
 export function useOrderedTable<T extends Record<string,any>, K extends keyof T>(
-  tableContent: T[],
-  keys: K[],
+  tableContent: Array<T>,
+  keys: Array<K>,
   iconSizes: number = 25
 ) {
   const [orderingParameters, setOrderingParameters] = useState<

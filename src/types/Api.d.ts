@@ -1,31 +1,20 @@
-export type CobrancasResponse = {
+type ApiGetBillsResponse = {
   cobrancas: {
     current_page: number;
     last_page: number;
-    data: [TCobranca];
+    data: [ApiBill];
     [string]: any;
   };
   [string]: any;
 };
 
-export type TCobranca = {
-  id_fatura: number;
-  id_cobranca: number;
-  valor: number;
-  vencido: boolean;
-  dias_vencido: number;
-  descricao: string;
-  data_vencimento_br: string;
-  data_vencimento: string;
-  cliente_servico: {
-    id_cliente: number;
-    cliente: TCliente;
-    [string]: any;
-  };
-  [string]: any;
+type ApiGetCustomerDebtsResponse = {
+  faturas: Array<ApiDebt>;
+  status: string;
+  msg: string;
 };
 
-export type TCliente = {
+type ApiCustomer = {
   ativo: boolean;
   codigo_client: number;
   nome_razaosocial: string;
@@ -36,24 +25,35 @@ export type TCliente = {
   [string]: any;
 };
 
-export type CustomerBillsResponse = {
-  faturas: TFatura[];
-  status: string;
-  msg: string;
+type ApiBill = {
+  id_fatura: number;
+  id_cobranca: number;
+  valor: number;
+  vencido: boolean;
+  dias_vencido: number;
+  descricao: string;
+  data_vencimento_br: string;
+  data_vencimento: string;
+  cliente_servico: {
+    id_cliente: number;
+    cliente: ApiCustomer;
+    [string]: any;
+  };
+  [string]: any;
 };
 
-export type TFatura = {
+type ApiDebt = {
   codigo_barras: string;
   data_vencimento: string;
   id_fatura: number;
   link: string;
   status: string;
   valor: number;
-  detalhamento: TDetalheFatura[];
+  detalhamento: Array<ApiDebtDetails>;
   [string]: any;
 };
 
-export type TDetalheFatura = {
+type ApiDebtDetails = {
   descricao: string;
   valor: number;
 };

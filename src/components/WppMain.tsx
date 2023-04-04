@@ -1,21 +1,20 @@
 import React, { useState } from "react";
 import WppTable from "./WppTable";
-import { TCustomer } from "../types/CustomerModel";
 import { useCustomersSelection } from "../context/customersContext";
 import { useIgnoredCustomers } from "../context/ignoredCustomersContext";
 import { useMessages } from "../hooks/useMessages";
-import { PhoneStatesMap } from "../types/Wpp";
 import { Link } from "react-router-dom";
 import ArrowBackIcon from "./icons/ArrowBack";
 import { ClientInfo } from "whatsapp-web.js";
 
 const WppMain = ({ wppCustomerInfo }: { wppCustomerInfo: ClientInfo }) => {
-  const { 
-    customerList, customersMap, billsMap } = useCustomersSelection();
+  const { customerList, customersMap, billsMap } = useCustomersSelection();
   const { ignoredCustomers } = useIgnoredCustomers();
 
   const [phones, setPhones] = useState<PhoneStatesMap>(() => {
-    return new Map(customerList!.map((customer) => [customer, [null, null, null]]));
+    return new Map(
+      customerList!.map((customer) => [customer, [null, null, null]])
+    );
   });
 
   let selectedCustomers = customerList!.filter((customer) => {

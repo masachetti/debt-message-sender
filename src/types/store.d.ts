@@ -1,7 +1,7 @@
-import { GenericObject } from "./GenericObject"
-
-export interface StoreProps<T extends GenericObject> {
-  fileName: string,
-  defaults: T
+type GenericObject = {
+  [key: string]: any;
+};
+interface StoreProps<T extends GenericObject> {
+  fileName: string;
+  defaults: T;
 }
-

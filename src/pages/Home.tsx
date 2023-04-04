@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import CustomersTable from "../components/CustomersTable";
-import { TCustomer } from "../types/CustomerModel";
 import Loading from "./../components/Loading";
 import { AnimatePresence, motion } from "framer-motion";
 import SendIcon from "../components/icons/Send";
@@ -31,7 +30,7 @@ function Home() {
 
   let loading = customersLoading || ignoredCustomersLoading;
 
-  const goToCustomerPage = (customer: TCustomer) => {
+  const goToCustomerPage = (customer: Customer) => {
     let url = "/customer/" + customer.customerId;
     navigate(url);
   };

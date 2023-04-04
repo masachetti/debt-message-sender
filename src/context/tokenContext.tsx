@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import { TokenProviderType } from "../types/tokenContext";
 import { fetchToken } from "../api/token";
 
 const AuthContext = React.createContext<TokenProviderType | null>(null);

@@ -1,7 +1,4 @@
-import { CustomerNameAndId } from "./CustomerModel";
-
-export type IgnoredUser = CustomerNameAndId
-
-export interface IgnoreListStore extends GenericObject{
-  ignoreList: IgnoredUser[];
+type IgnoredUser = CustomerNameAndId;
+interface IgnoreListStore extends GenericObject {
+  ignoreList: Array<IgnoredUser>;
 }

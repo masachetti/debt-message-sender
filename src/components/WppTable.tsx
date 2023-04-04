@@ -1,22 +1,20 @@
 import React, { useState } from "react";
 import CardTextIcon from "./icons/CardText";
-import { TBill, TCustomer } from "../types/CustomerModel";
 import MessagePreview from "./MessagePreview";
-import { PhoneStatesMap, TPhoneState } from "../types/Wpp";
 import CheckIcon from "./icons/Check";
 import XIcon from "./icons/X";
 import DashIcon from "./icons/Dash";
 
 interface WppTableProps {
   className?: string;
-  selectedBillsByCustomer: Map<TCustomer, Array<TBill>>;
-  messages: Map<TCustomer, string>;
+  selectedBillsByCustomer: Map<Customer, Array<Debt>>;
+  messages: Map<Customer, string>;
   phonesState: PhoneStatesMap;
 }
 
 function createPhoneRep(
-  phoneState: TPhoneState ,
-  customerPhone: TCustomer["secondPhone"]
+  phoneState: PhoneState ,
+  customerPhone: Customer["secondPhone"]
 ) {
   const rep = (content: JSX.Element) => (
     <div className="flex justify-center max-h-12">{content}</div>
@@ -39,9 +37,9 @@ const WppTable = ({
   phonesState,
 }: WppTableProps) => {
   const [customerToShowMessagePreview, setCustomerToShowMessagePreview] =
-    useState<TCustomer | null>(null);
+    useState<Customer | null>(null);
 
-  const openMessagePreview = (customer: TCustomer) =>
+  const openMessagePreview = (customer: Customer) =>
     setCustomerToShowMessagePreview(customer);
 
   const closeMessagePreview = () => setCustomerToShowMessagePreview(null);

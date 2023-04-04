@@ -1,5 +1,3 @@
-import { CustomerBillsResponse } from "../types/ApiResponses";
-
 const baseURL = `${process.env.REACT_APP_API_URL}/api/v1/integracao/Customere/financeiro?`;
 
 type GetCustomerBillsParams = { token: string; customerDocument: string };
@@ -7,7 +5,7 @@ type GetCustomerBillsParams = { token: string; customerDocument: string };
 export function getCustomerBills({
   token,
   customerDocument,
-}: GetCustomerBillsParams): Promise<CustomerBillsResponse> {
+}: GetCustomerBillsParams): Promise<ApiGetCustomerDebtsResponse> {
   let fullURL =
     baseURL +
     new URLSearchParams({

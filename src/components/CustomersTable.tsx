@@ -1,14 +1,13 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 import { useOrderedTable } from "../hooks/useOrderedTable";
-import { TCustomer } from "../types/CustomerModel";
 import { useCustomersSelection } from "../context/customersContext";
 import { useIgnoredCustomers } from "../context/ignoredCustomersContext";
 import BanIcon from "./icons/Ban";
 
 type CustomersTableProps = {
   className?: string;
-  onCustomerRowDoubleClick: (customer: TCustomer) => void;
+  onCustomerRowDoubleClick: (customer: Customer) => void;
 };
 
 const rowTransition = { duration: 0.15 };
@@ -34,8 +33,8 @@ const CustomersTable = ({
     18
   );
 
-  const ignoreButtonHandler = (customer: TCustomer) => setCustomerAsIgnored(customer);
-  const onCheckBoxCellClick = (customer: TCustomer) => toggleCustomer(customer);
+  const ignoreButtonHandler = (customer: Customer) => setCustomerAsIgnored(customer);
+  const onCheckBoxCellClick = (customer: Customer) => toggleCustomer(customer);
 
   return (
     <div className={`CustomerTable ${className}`}>

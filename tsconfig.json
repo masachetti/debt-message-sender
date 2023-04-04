@@ -28,6 +28,6 @@
     "src/**/*",
   ],
   "files": [
-    "src/types/ElectronApi.d.ts"
+    "src/types/Electron.d.ts"
   ]
 }

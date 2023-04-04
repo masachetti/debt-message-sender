@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { TBill, TCustomer } from "../types/CustomerModel";
 import mockData from "./customers.json";
 
 export function useMockCustomers() {
-  const [data] = useState<TCustomer[]>(() => {
+  const [data] = useState<Array<Customer>>(() => {
     let customers = mockData.clients;
     return customers.map(convertCustomer);
   });
@@ -12,7 +11,7 @@ export function useMockCustomers() {
   return { data };
 }
 
-function convertCustomer(customer: typeof mockData.clients[0]): TCustomer {
+function convertCustomer(customer: typeof mockData.clients[0]): Customer {
   return {
     customerId: customer.cpf_cnpj,
     firstPhone: customer.telefone_primario,
@@ -23,7 +22,7 @@ function convertCustomer(customer: typeof mockData.clients[0]): TCustomer {
   };
 }
 
-function convertBill(bill: typeof mockData.clients[0]["faturas"][0]): TBill {
+function convertBill(bill: typeof mockData.clients[0]["faturas"][0]): Debt {
   return {
     barCode: bill.codigo_barras,
     billId: bill.id_fatura,

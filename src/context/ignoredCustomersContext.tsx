@@ -1,11 +1,10 @@
 import React, { useContext, useState } from "react";
 import useIgnoreList from "../hooks/useIgnoreList";
-import { CustomerNameAndId, TCustomer } from "../types/CustomerModel";
 
 type TIgnoredCustomersContext = {
   loading: boolean;
   ignoredCustomers: ReturnType<typeof useIgnoreList>["ignoreList"];
-  setCustomerAsIgnored: (customer: TCustomer) => void;
+  setCustomerAsIgnored: (customer: Customer) => void;
   removeCustomerFromIgnored: (customer: CustomerNameAndId) => void;
 };
 
@@ -21,7 +20,7 @@ export const IgnoredCustomersProvider: React.FC<React.PropsWithChildren> = ({
     loading,
   } = useIgnoreList();
 
-  const setCustomerAsIgnored = ({ name, customerId }: TCustomer) => {
+  const setCustomerAsIgnored = ({ name, customerId }: Customer) => {
     electronApi
       .addToIgnoreList({ name, customerId })
       .then((newIgnoreList) => setIgnoreList(newIgnoreList));

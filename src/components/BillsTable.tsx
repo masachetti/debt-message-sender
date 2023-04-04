@@ -1,5 +1,4 @@
 import React, { Fragment, useState } from "react";
-import { TBill, TCustomer } from "../types/CustomerModel";
 import { useCustomersSelection } from "../context/customersContext";
 import { AnimatePresence, motion } from "framer-motion";
 import LinkIcon from "./icons/Link";
@@ -11,7 +10,7 @@ import {
 } from "../utils/date";
 
 interface BillsTableProps {
-  customer: TCustomer;
+  customer: Customer;
   className?: string;
   onCopyToClipboardSuccess?: () => void;
   onCopyToClipboardFail?: () => void;
@@ -27,13 +26,13 @@ const BillsTable: React.FC<BillsTableProps> = ({
   let { bills } = customer;
 
   const [isBillDetailsOpen, setIsBillDetailsOpen] = useState(() => {
-    let billDetailsMap = new Map<TBill, boolean>(
+    let billDetailsMap = new Map<Debt, boolean>(
       bills.map((bill) => [bill, false])
     );
     return billDetailsMap;
   });
 
-  function copyBarCodeToClipboard(bill: TBill) {
+  function copyBarCodeToClipboard(bill: Debt) {
     navigator.clipboard.writeText(bill.barCode).then(
       () => {
         if (onCopyToClipboardSuccess) onCopyToClipboardSuccess();
@@ -44,7 +43,7 @@ const BillsTable: React.FC<BillsTableProps> = ({
     );
   }
 
-  function toggleBillDetails(bill: TBill) {
+  function toggleBillDetails(bill: Debt) {
     let prev = isBillDetailsOpen.get(bill)
     isBillDetailsOpen.set(bill, !prev);
     setIsBillDetailsOpen(new Map(isBillDetailsOpen));

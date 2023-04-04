@@ -8,6 +8,6 @@ export function calculateDifferenceBetweenDates(dateA: Date, dateB: Date): numbe
 }
 
 export function makeDateFromBrDateString(dateString: string): Date{
-  let dateValues: number[] = dateString.split("/").map(v=>parseInt(v)).reverse()
+  let dateValues: Array<number> = dateString.split("/").map(v=>parseInt(v)).reverse()
   return new Date(dateValues[0], dateValues[1]-1, dateValues[2])
 }

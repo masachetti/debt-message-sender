@@ -1,4 +1,3 @@
-import { IgnoredUser, IgnoreListStore } from "../../types/IgnoreList";
 import { Store } from "../store";
 
 const ignoreListStore = new Store<IgnoreListStore>({
