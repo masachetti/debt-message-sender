@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { fetchToken } from "../api/fetchToken";
-import { FetchBillsParams, fetchBills } from "../api/fetchBills";
+import { fetchBills } from "../api/fetchBills";
 import { fetchCustomerDebts } from "../api/fetchCustomerDebts";
 import { createCustomer } from "../models/Customer";
 
@@ -55,9 +55,12 @@ export const CustomersProvider: React.FC<React.PropsWithChildren> = ({
         )
         .flat();
       let uniqueCustomers = getUniqueCustomers(customerList);
+      let activeCustomers = uniqueCustomers.filter(
+        (customer) => customer.ativo
+      );
 
       let customersWithExpiredDebts: Array<Customer> = await Promise.all(
-        uniqueCustomers.map(async (customer) =>
+        activeCustomers.map(async (customer) =>
           fetchCustomerDebts({
             token,
             customerDocument: customer.cpf_cnpj,
