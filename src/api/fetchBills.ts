@@ -1,12 +1,22 @@
 const baseURL = `${process.env.REACT_APP_API_URL}/api/v1/financeiro/cobranca/consultar/80`;
 
+function firstDayOfMonth() {
+  let date = new Date();
+  date.setDate(1);
+  return date;
+}
+
+function dateString(date: Date) {
+  return date.toISOString().slice(0, 10);
+}
+
 export function fetchBills(token: string): Promise<ApiGetBillsResponse> {
   const data = {
     apenas_ativo: false,
     status_generico: "vencido",
     forma_cobranca: [],
-    data_inicio: "2023-01-01T16:00:00.000Z",
-    data_fim: "2023-01-31T16:00:00.000Z",
+    data_inicio: dateString(firstDayOfMonth()),
+    data_fim: dateString(new Date()),
     tipo_data: "data_vencimento",
     order_by: "data_vencimento",
     order_by_key: "ASC",
