@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import DebtsTable from "../components/DebtsTable";
 import { useParams } from "react-router-dom";
-import { useCustomersSelection } from "../context/customersContext";
+import { useCustomersSelection } from "../context/customerSelectionContext";
 import ArrowBackIcon from "../components/icons/ArrowBack";
 import { Link } from "react-router-dom";
+import { useCustomers } from "../context/customersContext";
 
 const CustomerDataView = () => {
   const { customerId } = useParams();
-  const { customersMap: customersMap } = useCustomersSelection();
-  const customerData = [...customersMap!.keys()].find(
+  const { customers } = useCustomers();
+  const customerData = customers.find(
     (customer) => customer.customerId === customerId
   );
 

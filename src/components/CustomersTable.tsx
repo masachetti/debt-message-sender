@@ -1,9 +1,10 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 import { useOrderedTable } from "../hooks/useOrderedTable";
-import { useCustomersSelection } from "../context/customersContext";
+import { useCustomersSelection } from "../context/customerSelectionContext";
 import { useIgnoredCustomers } from "../context/ignoredCustomersContext";
 import BanIcon from "./icons/Ban";
+import { useCustomers } from "../context/customersContext";
 
 type CustomersTableProps = {
   className?: string;
@@ -19,12 +20,16 @@ const CustomersTable = ({
   className = "",
   onCustomerRowDoubleClick,
 }: CustomersTableProps) => {
-  const { customersMap: customersMap, toggleCustomer: toggleCustomer, toggleAllCustomers: toggleAllCustomers } = useCustomersSelection();
+  const { customers } = useCustomers();
+  const { customersMap, toggleCustomer, toggleAllCustomers } =
+    useCustomersSelection();
   const { ignoredCustomers, setCustomerAsIgnored } = useIgnoredCustomers();
 
-  let allowedCustomers = [...customersMap!.keys()].filter(
+  let allowedCustomers = customers.filter(
     (customer) =>
-      !ignoredCustomers.find((iCustomer) => iCustomer.customerId === customer.customerId)
+      !ignoredCustomers.find(
+        (iCustomer) => iCustomer.customerId === customer.customerId
+      )
   );
 
   const { orderedContent, toggleOrdering, icons } = useOrderedTable(
@@ -33,7 +38,8 @@ const CustomersTable = ({
     18
   );
 
-  const ignoreButtonHandler = (customer: Customer) => setCustomerAsIgnored(customer);
+  const ignoreButtonHandler = (customer: Customer) =>
+    setCustomerAsIgnored(customer);
   const onCheckBoxCellClick = (customer: Customer) => toggleCustomer(customer);
 
   return (

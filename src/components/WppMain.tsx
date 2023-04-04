@@ -1,23 +1,25 @@
 import React, { useState } from "react";
 import WppTable from "./WppTable";
-import { useCustomersSelection } from "../context/customersContext";
+import { useCustomersSelection } from "../context/customerSelectionContext";
 import { useIgnoredCustomers } from "../context/ignoredCustomersContext";
 import { useMessages } from "../hooks/useMessages";
 import { Link } from "react-router-dom";
 import ArrowBackIcon from "./icons/ArrowBack";
 import { ClientInfo } from "whatsapp-web.js";
+import { useCustomers } from "../context/customersContext";
 
 const WppMain = ({ wppCustomerInfo }: { wppCustomerInfo: ClientInfo }) => {
-  const { customerList, customersMap, debtsMap } = useCustomersSelection();
+  const { customers } = useCustomers()
+  const { customersMap, debtsMap } = useCustomersSelection();
   const { ignoredCustomers } = useIgnoredCustomers();
 
   const [phones, setPhones] = useState<PhoneStatesMap>(() => {
     return new Map(
-      customerList!.map((customer) => [customer, [null, null, null]])
+      customers.map((customer) => [customer, [null, null, null]])
     );
   });
 
-  let selectedCustomers = customerList!.filter((customer) => {
+  let selectedCustomers = customers.filter((customer) => {
     let isSelected = customersMap?.get(customer);
     if (!isSelected) return false;
     let isIgnored = ignoredCustomers.find(
@@ -37,12 +39,12 @@ const WppMain = ({ wppCustomerInfo }: { wppCustomerInfo: ClientInfo }) => {
 
   const startSendingMessages = () => {
     selectedCustomers.forEach((customer) => {
-      // let customerPhones = [
-      //   customer.firstPhone,
-      //   customer.secondPhone,
-      //   customer.thirdPhone,
-      // ];
-      let customerPhones = ["00000000000", "65999252721", "99999999999"];
+      let customerPhones = [
+        customer.firstPhone,
+        customer.secondPhone,
+        customer.thirdPhone,
+      ];
+      // let customerPhones = ["00000000000", "65999252721", "99999999999"];
       customerPhones.every(async (phone, index) => {
         if (phone) {
           let isMsgSended = await electronApi.sendWppMessage(

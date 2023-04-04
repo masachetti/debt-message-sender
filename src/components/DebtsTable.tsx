@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import { useCustomersSelection } from "../context/customersContext";
+import { useCustomersSelection } from "../context/customerSelectionContext";
 import { AnimatePresence, motion } from "framer-motion";
 import LinkIcon from "./icons/Link";
 import CopyIcon from "./icons/Copy";

@@ -3,14 +3,14 @@ import CustomersTable from "../components/CustomersTable";
 import Loading from "./../components/Loading";
 import { AnimatePresence, motion } from "framer-motion";
 import SendIcon from "../components/icons/Send";
-import { useCustomersSelection } from "../context/customersContext";
 import { useIgnoredCustomers } from "../context/ignoredCustomersContext";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useCustomers } from "../context/customersContext";
 
 function Home() {
   const [search, setSearch] = useState("");
-  const { loading: customersLoading } = useCustomersSelection();
+  const { isFetching } = useCustomers();
   const { loading: ignoredCustomersLoading } = useIgnoredCustomers();
 
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ function Home() {
   //   );
   // }
 
-  let loading = customersLoading || ignoredCustomersLoading;
+  let loading = isFetching || ignoredCustomersLoading;
 
   const goToCustomerPage = (customer: Customer) => {
     let url = "/customer/" + customer.customerId;
