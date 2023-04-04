@@ -1,11 +1,11 @@
 const baseURL = `${process.env.REACT_APP_API_URL}/api/v1/integracao/Customere/financeiro?`;
 
-type GetCustomerDebtsParams = { token: string; customerDocument: string };
+type FetchCustomerDebtsParams = { token: string; customerDocument: string };
 
-export function getCustomerDebts({
+export function fetchCustomerDebts({
   token,
   customerDocument,
-}: GetCustomerDebtsParams): Promise<ApiGetCustomerDebtsResponse> {
+}: FetchCustomerDebtsParams): Promise<ApiGetCustomerDebtsResponse> {
   let fullURL =
     baseURL +
     new URLSearchParams({

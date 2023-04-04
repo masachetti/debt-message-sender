@@ -1,6 +1,6 @@
 const authURL = `${process.env.REACT_APP_API_URL}oauth/token`;
 
-function fetchToken(callback: (token: string) => void) {
+function fetchToken(): Promise<string>{
   const data = {
     client_id: process.env.REACT_APP_API_CLIENT_ID,
     client_secret: process.env.REACT_APP_API_CLIENT_SECRET,
@@ -8,7 +8,7 @@ function fetchToken(callback: (token: string) => void) {
     password: process.env.REACT_APP_API_PASSWORD,
     grant_type: "password",
   };
-  fetch(authURL, {
+  return fetch(authURL, {
     body: JSON.stringify(data),
     method: "POST",
     headers: {
@@ -16,8 +16,7 @@ function fetchToken(callback: (token: string) => void) {
     },
   })
     .then((response) => response.json())
-    .then((data) => `Bearer ${data["access_token"]}`)
-    .then((token) => callback(token));
+    .then((data) => `Bearer ${data["access_token"]}`);
 }
 
 export { fetchToken };
