@@ -30,9 +30,6 @@ const Wpp = () => {
   let isLoading = !!!(qrCode || wppCustomerInfo);
   let isWppLogged = !!wppCustomerInfo;
 
-  // let isLoading = false;
-  // let isWppLogged = true;
-
   const loadingComponent = () => (
     <motion.div
       className="absolute"
