@@ -1,4 +1,4 @@
-const authURL = `${process.env.REACT_APP_API_URL}oauth/token`;
+const authURL = `${process.env.REACT_APP_API_URL}/oauth/token`;
 
 function fetchToken(): Promise<string>{
   const data = {
