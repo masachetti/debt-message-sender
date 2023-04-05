@@ -25,7 +25,7 @@ const IgnoredCustomers = () => {
             </button>
           </Link>
         </div>
-        <IgnoredCustomersTable className="max-h-[80vh] my-4" />
+        <IgnoredCustomersTable className="max-h-[80vh] my-4" searchString={search}/>
       </div>
     </div>
   );

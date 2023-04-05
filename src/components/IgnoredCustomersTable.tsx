@@ -10,10 +10,15 @@ const cellExit = { padding: 0 };
 const cellDivExit = { maxHeight: 0 };
 const rowExit = { transform: "translate(100%, 0)" };
 
-const IgnoredCustomersTable = ({ className = "" }) => {
+const IgnoredCustomersTable = ({ className = "", searchString = "" }) => {
   const { ignoredCustomers, removeCustomerFromIgnored } = useIgnoredCustomers();
+
+  const filteredCustomers = ignoredCustomers.filter((iCustomer) =>
+    iCustomer.name.toLowerCase().includes(searchString.toLowerCase())
+  );
+
   const { sortedContent, toggleSortOrder, icons } = useSortedContent(
-    ignoredCustomers,
+    filteredCustomers,
     ["name"],
     18
   );
