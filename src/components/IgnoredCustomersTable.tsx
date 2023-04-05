@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useSortedContent } from "../hooks/useSortedContent";
 import { useIgnoredCustomers } from "../context/ignoredCustomersContext";
 import CheckIcon from "./icons/Check";
+import usePersistentScrollPosition from "../hooks/usePersistentScrollPosition";
 
 const transition = { duration: 0.15 };
 const cellExit = { padding: 0 };
@@ -16,8 +17,15 @@ const IgnoredCustomersTable = ({ className = "" }) => {
     ["name"],
     18
   );
+  const { elementRef: tableRef, onScroll } = usePersistentScrollPosition(
+    "ignored_customer_table_scroll_position"
+  );
   return (
-    <div className={`IgnoredCustomersTable ${className}`}>
+    <div
+      className={`IgnoredCustomersTable ${className}`}
+      ref={tableRef}
+      onScroll={onScroll}
+    >
       <table>
         <thead>
           <tr className="[&>th]:bg-neutral-600 [&>th]:text-white">

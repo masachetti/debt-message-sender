@@ -5,8 +5,7 @@ import { useCustomersSelection } from "../context/customerSelectionContext";
 import { useIgnoredCustomers } from "../context/ignoredCustomersContext";
 import BanIcon from "./icons/Ban";
 import { useCustomers } from "../context/customersContext";
-
-const CUSTOMER_TABLE_SCROLL_STORAGE_KEY = "customer_table_scroll_position";
+import usePersistTableScrollPosition from "../hooks/usePersistentScrollPosition";
 
 type CustomersTableProps = {
   className?: string;
@@ -27,18 +26,9 @@ const CustomersTable = ({
     useCustomersSelection();
   const { ignoredCustomers, setCustomerAsIgnored } = useIgnoredCustomers();
 
-  const tableRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    let currentTableScrollPosition = sessionStorage.getItem(
-      CUSTOMER_TABLE_SCROLL_STORAGE_KEY
-    );
-    if (currentTableScrollPosition) {
-      if (tableRef && tableRef.current) {
-        tableRef.current.scrollTop = Number(currentTableScrollPosition);
-      }
-    }
-  }, []);
+  const { elementRef: tableRef, onScroll } = usePersistTableScrollPosition(
+    "customer_table_scroll_position"
+  );
 
   let allowedCustomers = customers.filter(
     (customer) =>
@@ -53,15 +43,6 @@ const CustomersTable = ({
     18
   );
 
-  const onTableScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
-    let element = e.target as HTMLDivElement;
-    let currentScrollPosition = element.scrollTop;
-    sessionStorage.setItem(
-      CUSTOMER_TABLE_SCROLL_STORAGE_KEY,
-      "" + currentScrollPosition
-    );
-  };
-
   const ignoreButtonHandler = (customer: Customer) =>
     setCustomerAsIgnored(customer);
   const onCheckBoxCellClick = (customer: Customer) => toggleCustomer(customer);
@@ -69,7 +50,7 @@ const CustomersTable = ({
   return (
     <div
       className={`CustomersTable ${className}`}
-      onScroll={onTableScroll}
+      onScroll={onScroll}
       ref={tableRef}
     >
       <table>
