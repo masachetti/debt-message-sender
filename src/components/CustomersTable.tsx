@@ -9,6 +9,8 @@ import usePersistTableScrollPosition from "../hooks/usePersistentScrollPosition"
 
 type CustomersTableProps = {
   className?: string;
+  searchString: string;
+  documentType?: "CPF" | "CNPJ" | null;
   onCustomerRowDoubleClick: (customer: Customer) => void;
 };
 
@@ -17,8 +19,37 @@ const rowExit = { transform: "translate(100%, 0)" };
 const cellExit = { padding: 0 };
 const cellDivExit = { maxHeight: 0 };
 
+function filterCustomers(
+  customers: Array<Customer>,
+  searchString: string,
+  ignoredCustomers: Array<IgnoredCustomer>,
+  documentType: "CPF" | "CNPJ" | null
+) {
+  const isCustomerSearchMatched = (cu: Customer) =>
+    cu.name.toUpperCase().includes(searchString.toUpperCase());
+  const isCustomerIgnored = (cu: Customer) =>
+    ignoredCustomers.find(
+      (iCu: IgnoredCustomer) => cu.customerId === iCu.customerId
+    );
+  const isCustomerDocumentTypeMatched = (cu: Customer) => {
+    if (!documentType) return true;
+    if (documentType === "CNPJ") return cu.customerId.length >= 14;
+    if (documentType === "CPF") return cu.customerId.length < 14;
+  };
+
+  return customers.filter((customer) => {
+    return (
+      isCustomerSearchMatched(customer) &&
+      !isCustomerIgnored(customer) &&
+      isCustomerDocumentTypeMatched(customer)
+    );
+  });
+}
+
 const CustomersTable = ({
   className = "",
+  searchString,
+  documentType = null,
   onCustomerRowDoubleClick,
 }: CustomersTableProps) => {
   const { customers } = useCustomers();
@@ -30,15 +61,15 @@ const CustomersTable = ({
     "customer_table_scroll_position"
   );
 
-  let allowedCustomers = customers.filter(
-    (customer) =>
-      !ignoredCustomers.find(
-        (iCustomer) => iCustomer.customerId === customer.customerId
-      )
+  let filteredCustomers = filterCustomers(
+    customers,
+    searchString,
+    ignoredCustomers,
+    documentType
   );
 
   const { sortedContent, toggleSortOrder, icons } = useSortedContent(
-    allowedCustomers,
+    filteredCustomers,
     ["name", "debts"],
     18
   );
