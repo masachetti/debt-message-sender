@@ -7,9 +7,13 @@ import { useIgnoredCustomers } from "../context/ignoredCustomersContext";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useCustomers } from "../context/customersContext";
+import ThreeStateToggleButton from "../components/ThreeStateToggleButton";
 
 function Home() {
   const [search, setSearch] = useState("");
+  const [documentFilter, setDocumentFilter] = useState<"CPF" | "CNPJ" | null>(
+    null
+  );
   const { isFetching } = useCustomers();
   const { loading: ignoredCustomersLoading } = useIgnoredCustomers();
 
@@ -19,14 +23,11 @@ function Home() {
     setSearch(ev.target.value);
   };
 
-  // if (search) {
-  //   displayCustomers = displayCustomers!.filter((customer) =>
-  //     customer.nome_razaosocial.toLowerCase().includes(search.toLowerCase())
-  //   );
-  //   displayIgnoredCustomers = displayIgnoredCustomers!.filter((customer) =>
-  //     customer.nome_razaosocial.toLowerCase().includes(search.toLowerCase())
-  //   );
-  // }
+  const updateDocumentFilter = (buttonState: number) => {
+    if (buttonState === -1) return setDocumentFilter("CPF");
+    if (buttonState === 0) return setDocumentFilter(null);
+    if (buttonState === 1) return setDocumentFilter("CNPJ");
+  };
 
   let loading = isFetching || ignoredCustomersLoading;
 
@@ -63,9 +64,19 @@ function Home() {
                 </button>
               </Link>
             </div>
+            <div className="flex mt-2">
+              <p>Apenas CPFs</p>
+              <ThreeStateToggleButton
+                className="mx-2"
+                onStateChange={updateDocumentFilter}
+              />
+              <p>Apenas CNPJs</p>
+            </div>
             <CustomersTable
               className="max-h-[80vh] my-4"
+              searchString={search}
               onCustomerRowDoubleClick={goToCustomerPage}
+              documentType={documentFilter}
             />
             <Link to={"/wpp"}>
               <button className="GreenButton">
