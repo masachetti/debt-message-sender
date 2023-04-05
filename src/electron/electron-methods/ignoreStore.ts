@@ -11,7 +11,7 @@ export const getIgnoreList = () => ignoreListStore.get("ignoreList");
 
 export const addToIgnoreList = (
   event: Electron.IpcMainInvokeEvent,
-  user: IgnoredUser
+  user: IgnoredCustomer
 ) => {
   let blackList = ignoreListStore.get("ignoreList");
   if (blackList!.find((v) => v.customerId === user.customerId)) return blackList;
@@ -22,7 +22,7 @@ export const addToIgnoreList = (
 
 export const removeFromIgnoreList = (
   event: Electron.IpcMainInvokeEvent,
-  user: IgnoredUser
+  user: IgnoredCustomer
 ) => {
   let blackList = ignoreListStore.get("ignoreList");
   let newBlackList = blackList!.filter((v) => v.customerId !== user.customerId);

@@ -1,4 +1,4 @@
-type IgnoredUser = CustomerNameAndId;
+type IgnoredCustomer = CustomerNameAndId;
 interface IgnoreListStore extends GenericObject {
-  ignoreList: Array<IgnoredUser>;
+  ignoreList: Array<IgnoredCustomer>;
 }

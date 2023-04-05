@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export default function useIgnoreList() {
-  const [ignoreList, setIgnoreList] = useState<Array<IgnoredUser>>([]);
+  const [ignoreList, setIgnoreList] = useState<Array<IgnoredCustomer>>([]);
   const [loading, setLoading] = useState(true);
 
   if (loading) {

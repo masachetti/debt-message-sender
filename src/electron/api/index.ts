@@ -2,15 +2,15 @@ import { IpcRendererEvent, ipcRenderer } from "electron";
 import { IpcChannels } from "../../enums/IpcChannels";
 import { ClientInfo } from "whatsapp-web.js";
 
-function getIgnoreList(): Promise<Array<IgnoredUser>> {
+function getIgnoreList(): Promise<Array<IgnoredCustomer>> {
   return ipcRenderer.invoke(IpcChannels.GetIgnoreList);
 }
 
-function addToIgnoreList(user: IgnoredUser): Promise<Array<IgnoredUser>> {
+function addToIgnoreList(user: IgnoredCustomer): Promise<Array<IgnoredCustomer>> {
   return ipcRenderer.invoke(IpcChannels.AddToIgnoreList, user);
 }
 
-function removeFromIgnoreList(user: IgnoredUser): Promise<Array<IgnoredUser>> {
+function removeFromIgnoreList(user: IgnoredCustomer): Promise<Array<IgnoredCustomer>> {
   return ipcRenderer.invoke(IpcChannels.RemoveFromIgnoreList, user);
 }
 
