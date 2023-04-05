@@ -1,6 +1,6 @@
 import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useOrderedTable } from "../hooks/useOrderedTable";
+import { useSortedContent } from "../hooks/useSortedContent";
 import { useIgnoredCustomers } from "../context/ignoredCustomersContext";
 import CheckIcon from "./icons/Check";
 
@@ -11,7 +11,7 @@ const rowExit = { transform: "translate(100%, 0)" };
 
 const IgnoredCustomersTable = ({ className = "" }) => {
   const { ignoredCustomers, removeCustomerFromIgnored } = useIgnoredCustomers();
-  const { orderedContent, toggleOrdering, icons } = useOrderedTable(
+  const { sortedContent, toggleSortOrder, icons } = useSortedContent(
     ignoredCustomers,
     ["name"],
     18
@@ -26,7 +26,7 @@ const IgnoredCustomersTable = ({ className = "" }) => {
                 Nome
                 <div
                   className="absolute top-1 right-0 cursor-pointer"
-                  onClick={() => toggleOrdering("name")}
+                  onClick={() => toggleSortOrder("name")}
                 >
                   {icons["name"]}
                 </div>
@@ -37,7 +37,7 @@ const IgnoredCustomersTable = ({ className = "" }) => {
         </thead>
         <tbody className="[&>tr>td]:bg-neutral-800 [&>tr>td]:text-white">
           <AnimatePresence>
-            {orderedContent.map((customer) => (
+            {sortedContent.map((customer) => (
               <motion.tr
                 layout
                 exit={rowExit}

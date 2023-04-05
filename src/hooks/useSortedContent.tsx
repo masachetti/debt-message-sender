@@ -3,44 +3,44 @@ import ArrowSortIcon from "../components/icons/ArrowSort";
 import SortAscendingIcon from "../components/icons/SortAscending";
 import SortDescendingIcon from "../components/icons/SortDescending";
 
-export function useOrderedTable<T extends Record<string,any>, K extends keyof T>(
-  tableContent: Array<T>,
-  keys: Array<K>,
-  iconSizes: number = 25
-) {
-  const [orderingParameters, setOrderingParameters] = useState<
+export function useSortedContent<
+  T extends Record<string, any>,
+  K extends keyof T
+>(content: Array<T>, keys: Array<K>, iconSizes: number = 25) {
+
+  const [sortParameters, setSortParameters] = useState<
     null | [keyof T, "asc" | "desc"]
   >(null);
 
-  const toggleOrdering = (key: keyof T) => {
-    if (!orderingParameters || orderingParameters[0] !== key) {
-      setOrderingParameters([key, "desc"]);
+  const toggleSortOrder = (key: keyof T) => {
+    if (!sortParameters || sortParameters[0] !== key) {
+      setSortParameters([key, "desc"]);
       return;
     }
-    if (orderingParameters[1] === "desc") {
-      setOrderingParameters([key, "asc"]);
+    if (sortParameters[1] === "desc") {
+      setSortParameters([key, "asc"]);
       return;
     }
-    setOrderingParameters(null);
+    setSortParameters(null);
   };
 
-  let orderedContent = [...tableContent];
-  if (orderingParameters) {
+  let sortedContent = [...content];
+  if (sortParameters) {
     let compareFn: (a: T, b: T) => number;
-    let orderingKey = orderingParameters[0];
+    let sortingKey = sortParameters[0];
 
-    if (orderingParameters[1] === "asc") {
+    if (sortParameters[1] === "asc") {
       compareFn = (a: T, b: T) => {
-        let aValue = a[orderingKey] as any;
-        let bValue = b[orderingKey] as any;
+        let aValue = a[sortingKey] as any;
+        let bValue = b[sortingKey] as any;
 
-        if ((aValue instanceof Array) && (bValue instanceof Array)){
-          return aValue.length - bValue.length
+        if (aValue instanceof Array && bValue instanceof Array) {
+          return aValue.length - bValue.length;
         }
-        if ((aValue instanceof Map) && (bValue instanceof Map)){
-          return aValue.size - bValue.size
+        if (aValue instanceof Map && bValue instanceof Map) {
+          return aValue.size - bValue.size;
         }
-        if ((aValue instanceof Date) && (bValue instanceof Date)) {
+        if (aValue instanceof Date && bValue instanceof Date) {
           if (!aValue.getTime()) return -1;
           if (!bValue.getTime()) return 1;
           return aValue.getTime() - bValue.getTime();
@@ -52,11 +52,11 @@ export function useOrderedTable<T extends Record<string,any>, K extends keyof T>
       };
     } else {
       compareFn = (a: T, b: T) => {
-        let aValue = a[orderingKey] as any;
-        let bValue = b[orderingKey] as any;
+        let aValue = a[sortingKey] as any;
+        let bValue = b[sortingKey] as any;
 
-        if ((aValue instanceof Array) && (bValue instanceof Array)){
-          return bValue.length - aValue.length
+        if (aValue instanceof Array && bValue instanceof Array) {
+          return bValue.length - aValue.length;
         }
         if (typeof aValue === "number" && typeof bValue === "number") {
           return bValue - aValue;
@@ -69,13 +69,13 @@ export function useOrderedTable<T extends Record<string,any>, K extends keyof T>
         return ("" + aValue).localeCompare("" + bValue);
       };
     }
-    orderedContent = orderedContent.sort(compareFn);
+    sortedContent = sortedContent.sort(compareFn);
   }
 
   let icons: Partial<Record<keyof T, JSX.Element>> = {};
   keys.forEach((k) => {
-    if (orderingParameters && orderingParameters[0] === k) {
-      if (orderingParameters[1] === "asc") {
+    if (sortParameters && sortParameters[0] === k) {
+      if (sortParameters[1] === "asc") {
         icons[k] = <SortAscendingIcon size={iconSizes} />;
         return;
       }
@@ -85,5 +85,5 @@ export function useOrderedTable<T extends Record<string,any>, K extends keyof T>
     icons[k] = <ArrowSortIcon size={iconSizes} />;
   });
 
-  return { toggleOrdering, orderedContent, icons };
+  return { toggleSortOrder, sortedContent, icons };
 }

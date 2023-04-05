@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useRef } from "react";
-import { useOrderedTable } from "../hooks/useOrderedTable";
+import { useSortedContent } from "../hooks/useSortedContent";
 import { useCustomersSelection } from "../context/customerSelectionContext";
 import { useIgnoredCustomers } from "../context/ignoredCustomersContext";
 import BanIcon from "./icons/Ban";
@@ -47,7 +47,7 @@ const CustomersTable = ({
       )
   );
 
-  const { orderedContent, toggleOrdering, icons } = useOrderedTable(
+  const { sortedContent, toggleSortOrder, icons } = useSortedContent(
     allowedCustomers,
     ["name", "debts"],
     18
@@ -86,7 +86,7 @@ const CustomersTable = ({
                 Nome
                 <div
                   className="absolute top-1 right-0 cursor-pointer"
-                  onClick={() => toggleOrdering("name")}
+                  onClick={() => toggleSortOrder("name")}
                 >
                   {icons["name"]}
                 </div>
@@ -97,7 +97,7 @@ const CustomersTable = ({
                 Faturas Vencidas
                 <div
                   className="absolute top-1 right-0 cursor-pointer"
-                  onClick={() => toggleOrdering("debts")}
+                  onClick={() => toggleSortOrder("debts")}
                 >
                   {icons["debts"]}
                 </div>
@@ -108,7 +108,7 @@ const CustomersTable = ({
         </thead>
         <tbody className="[&>tr>td]:bg-indigo-200">
           <AnimatePresence>
-            {orderedContent.map((customer) => (
+            {sortedContent.map((customer) => (
               <motion.tr
                 key={customer.customerId}
                 layout
