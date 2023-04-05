@@ -7,7 +7,6 @@ interface MessagePreviewProps {
 }
 
 const MessagePreview = ({ message, onClose }: MessagePreviewProps) => {
-  console.log(message)
   return (
     <div className="absolute top-0 left-0 z-50 bg-stone-500 bg-opacity-50 w-screen h-screen flex justify-center">
       <div className="relative w-2/4 h-2/4 bg-slate-600 border-2 rounded-lg flex flex-col mt-40 p-2">
